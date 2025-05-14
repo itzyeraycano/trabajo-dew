@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+header {
+	background: linear-gradient(to right, #000, #444);
+	color: white;
+	padding: 2rem 1rem;
+	text-align: center;
+}
+header h1 {
+	font-style: italic;
+}
+header em {
+	color: #b2ff59;
+	font-style: normal;
+}
+footer {
+	font-size: 0.9rem;
+	font-style: italic;
+	margin-top: 2rem;
+	text-align: center;
+}
+
+.student-img {
+	max-width: 100%;
+	border-radius: 4px;
+}
+.student-header {
+	font-size: 1.8rem;
+	font-weight: bold;
+}
