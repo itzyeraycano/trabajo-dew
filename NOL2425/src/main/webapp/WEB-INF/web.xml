@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="https://jakarta.ee/xml/ns/jakartaee"
-         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-         id="WebApp_ID"
-         version="6.0">
+<web-app 
+    xmlns="https://jakarta.ee/xml/ns/jakartaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="
+      https://jakarta.ee/xml/ns/jakartaee 
+      https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+    version="6.0">
 
   <display-name>NOL2425</display-name>
 
@@ -23,7 +25,7 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <!-- Filtro DataAuthFilter (opcional si está bien configurado) -->
+  <!-- Filtro AuthFilter -->
   <filter>
     <filter-name>AuthFilter</filter-name>
     <filter-class>dew.filtros.AuthFilter</filter-class>
@@ -34,7 +36,7 @@
   </filter-mapping>
 
   <!-- AlumnoServlet -->
-  <servlet>
+ <servlet>
     <servlet-name>AlumnoServlet</servlet-name>
     <servlet-class>dew.main.AlumnoServlet</servlet-class>
   </servlet>
@@ -42,23 +44,25 @@
     <servlet-name>AlumnoServlet</servlet-name>
     <url-pattern>/alumno</url-pattern>
   </servlet-mapping>
-
-  <!-- Seguridad con FORM login -->
+  
+  <!-- Seguridad sobre esos endpoints -->
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>ZonaAlumno</web-resource-name>
+      <web-resource-name>Recursos Protegidos</web-resource-name>
       <url-pattern>/alumno</url-pattern>
     </web-resource-collection>
     <auth-constraint>
       <role-name>rolalu</role-name>
+      <role-name>rolpro</role-name>
     </auth-constraint>
   </security-constraint>
 
+  <!-- Seguridad con FORM login -->
   <login-config>
     <auth-method>FORM</auth-method>
     <form-login-config>
-      <form-login-page>/login.jsp</form-login-page>
-      <form-error-page>/login.jsp?error=true</form-error-page>
+      <form-login-page>/login.html</form-login-page>
+      <form-error-page>/login.html?error=true</form-error-page>
     </form-login-config>
   </login-config>
 
@@ -73,7 +77,7 @@
   <!-- Welcome -->
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
-    <welcome-file>login.html</welcome-file>
+    <welcome-file>index.html</welcome-file>
   </welcome-file-list>
 
 </web-app>
