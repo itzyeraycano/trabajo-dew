@@ -39,7 +39,7 @@ public class AuthFilter implements Filter {
         HttpServletResponse res  = (HttpServletResponse) rs;
         HttpSession session = req.getSession(true);
 
-        // Si no hay apiKey/cacheCookie en sesión y el usuario web está logeado:
+        // Si no hay apiKey/Sesioncookie y el usuario web está logeado:
         if (session.getAttribute("apiKey") == null && req.getRemoteUser() != null) {
             String user = req.getRemoteUser();
             String pass = creds.getProperty(user);
