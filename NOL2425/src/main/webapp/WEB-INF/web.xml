@@ -1,32 +1,81 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="https://jakarta.ee/xml/ns/jakartaee"
-         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
-         id="WebApp_ID"
-         version="6.0">
+<web-app 
+    xmlns="https://jakarta.ee/xml/ns/jakartaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+    version="6.0">
 
   <display-name>NOL2425</display-name>
 
-  <!-- Página de inicio -->
-  <welcome-file-list>
-    <welcome-file>login.html</welcome-file>
-    <welcome-file>index.jsp</welcome-file>
-    <welcome-file>index.htm</welcome-file>
-    <welcome-file>default.html</welcome-file>
-    <welcome-file>default.jsp</welcome-file>
-    <welcome-file>default.htm</welcome-file>
-  </welcome-file-list>
+  <!-- Base de CentroEducativo -->
+  <context-param>
+    <param-name>centro.baseUrl</param-name>
+    <param-value>http://localhost:9090/CentroEducativo</param-value>
+  </context-param>
 
-  <!-- Filtro de logs global (Versión 2) -->
+  <!-- Filtro global de Logs -->
   <filter>
     <filter-name>Logs</filter-name>
-    <filter-class>dew.main.Logs</filter-class>
+    <filter-class>dew.filtros.Logs</filter-class>
   </filter>
-
   <filter-mapping>
     <filter-name>Logs</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+  <!-- Filtro DataAuthFilter (opcional si está bien configurado) -->
+  <filter>
+    <filter-name>DataAuthFilter</filter-name>
+    <filter-class>dew.filtros.AuthFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>AuthFilter</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+
+  <!-- AlumnoServlet -->
+  <servlet>
+    <servlet-name>AlumnoServlet</servlet-name>
+    <servlet-class>dew.main.AlumnoServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>AlumnoServlet</servlet-name>
+    <url-pattern>/alumno</url-pattern>
+  </servlet-mapping>
+
+  <!-- Seguridad con FORM login -->
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>ZonaAlumno</web-resource-name>
+      <url-pattern>/alumno</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>rolalu</role-name>
+    </auth-constraint>
+  </security-constraint>
+
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/login.jsp</form-login-page>
+      <form-error-page>/login.jsp?error=true</form-error-page>
+    </form-login-config>
+  </login-config>
+
+  <!-- Roles -->
+  <security-role>
+    <role-name>rolalu</role-name>
+  </security-role>
+  <security-role>
+    <role-name>rolpro</role-name>
+  </security-role>
+
+  <!-- Welcome -->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
 </web-app>
+
 
