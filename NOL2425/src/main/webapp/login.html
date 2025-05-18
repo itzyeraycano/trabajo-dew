@@ -1,54 +1,83 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Bienvenid@ a Notas OnLine</title>
-		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    	<link href="./css/estilos.css" rel="stylesheet" type="text/css">
-	</head>
-	<body>
-		<div class="container">
-		    <header class="mb-4 rounded">
-		      <h1>Bienvenid@ a <em>Notas OnLine</em></h1>
-		      <p><strong>Una aplicación que cuesta más de lo que parece para conseguir menos de<br> 
-		      lo que creías... ¿¡Qué más se puede pedir!?</strong></p>
-		    </header>
-		
-		    <!-- Secciones de acceso -->
-		    <div class="row">
-		      <div class="col-md-8">
-		        <h2>Si eres alumn@...</h2>
-		        <h2>Si eres alumn@...</h2>
-				<p>Podrás <a href="Registro.html">consultar</a> tus calificaciones... Debes contar con tus datos<br>
-				identificativos para acceder.</p>
-		
-		        <h2>Si eres profesor@...</h2>
-		        <p>Podrás <a href="#">consultar</a> o <a href="#">modificar</a> las calificaciones en tus asignaturas... Debes<br>
-		        contar con tus datos identificativos para acceder.</p>
-		      </div>
-		
-		      <!-- Grupo listado -->
-		      <div class="col-md-4">
-		        <div class="border rounded p-3 bg-light">
-		          <h5><strong>Grupo G4_labo_Lunes</strong></h5>
-		          <ol class="mb-0">
-		            <li>Caballero Martínez, Fabio</li>
-		            <li>Cano Moya, Yeray</li>
-		            <li>Domenech Gascó, Marc</li>
-		            <li>Genés Bastidas, Rubén</li>
-		            <li>Makmar, Laila</li>
-		            <li>Marín Hernández, José</li>
-		          </ol>
-		        </div>
-		      </div>
-		    </div>
-		
-		    <!-- Pie de página -->
-		    <hr>
-		    <footer class="mt-4">
-		      <p>Trabajo en grupo realizado para la asignatura Desarrollo Web. CCurso 2024-2025</p>
-		    </footer>
-		</div>
-		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	</body>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bienvenid@ a Notas OnLine</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="./css/estilos.css" rel="stylesheet" type="text/css">
+  </head>
+  <body>
+    <div class="container">
+      <header class="mb-4 rounded">
+        <h1>Bienvenid@ a <em>Notas OnLine</em></h1>
+        <p><strong>Una aplicación que cuesta más de lo que parece para conseguir menos de<br> 
+        lo que creías... ¿¡Qué más se puede pedir!?</strong></p>
+      </header>
+
+      <!-- Secciones de acceso -->
+      <div class="row">
+        <div class="col-md-8">
+          <h2>Si eres alumn@...</h2>
+          <p>Podrás <a href="#" data-bs-toggle="modal" data-bs-target="#formModal">consultar</a> tus calificaciones... Debes contar con tus datos<br>
+          identificativos para acceder.</p>
+
+          <h2>Si eres profesor@...</h2>
+          <p>Podrás <a href="#">consultar</a> o <a href="#">modificar</a> las calificaciones en tus asignaturas... Debes<br>
+          contar con tus datos identificativos para acceder.</p>
+        </div>
+
+        <!-- Grupo listado -->
+        <div class="col-md-4">
+          <div class="border rounded p-3 bg-light">
+            <h5><strong>Grupo G4_labo_Lunes</strong></h5>
+            <ol class="mb-0">
+              <li>Caballero Martínez, Fabio</li>
+              <li>Cano Moya, Yeray</li>
+              <li>Domenech Gascó, Marc</li>
+              <li>Genés Bastidas, Rubén</li>
+              <li>Makmar, Laila</li>
+              <li>Marín Hernández, José</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pie de página -->
+      <hr>
+      <footer class="mt-4">
+        <p>Trabajo en grupo realizado para la asignatura Desarrollo Web. Curso 2024-2025</p>
+      </footer>
+    </div>
+
+    <!-- Modal con formulario de Nombre y Apellidos -->
+    <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="formModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="formModalLabel">Acceso de Alumn@</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formAlumno">
+              <fieldset>
+                <legend><em>Información</em></legend>
+                <div class="mb-3">
+                  <label for="nombre" class="form-label">Nombre:</label>
+                  <input type="text" class="form-control" id="nombre" name="nombre" size="20" required />
+                </div>
+                <div class="mb-3">
+                  <label for="apellidos" class="form-label">Apellidos:</label>
+                  <input type="text" class="form-control" id="apellidos" name="apellidos" size="40" required />
+                </div>
+              </fieldset>
+              <button type="submit" class="btn btn-primary mt-3">Entrar</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
 </html>
