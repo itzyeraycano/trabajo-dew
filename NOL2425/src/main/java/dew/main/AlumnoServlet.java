@@ -15,7 +15,9 @@ import java.util.List;
 
 public class AlumnoServlet extends HttpServlet {
 
-    /**
+    private static final long serialVersionUID = 1L;
+
+	/**
      * Maneja las peticiones GET para mostrar los datos de los alumnos.
      * Dependiendo de la URL, muestra el perfil de un alumno o la lista de alumnos.
      */
