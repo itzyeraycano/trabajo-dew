@@ -11,47 +11,70 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Servicio encargado de manejar la información del alumno y sus asignaturas.
- * Obtiene los datos del alumno y sus asignaturas desde el backend.
+ * Servicio encargado de recuperar la información de un alumno,
+ * incluyendo su lista de asignaturas desde la API de CentroEducativo.
  */
 public class ServicioAlumno {
 
     private static final Gson gson = new Gson();
 
     /**
-     * Obtiene los datos del alumno y sus asignaturas desde la API de CentroEducativo.
+     * Recupera el alumno y sus asignaturas desde el backend.
      *
-     * @param context El contexto de la aplicación web
-     * @param session La sesión HTTP del usuario
-     * @return El alumno con sus asignaturas asociadas
-     * @throws IOException Si hay problemas al hacer las peticiones
+     * @param context El contexto de la aplicación web.
+     * @param session La sesión actual con apiKey y cookie ya autenticadas.
+     * @return Objeto Alumno con todos sus datos y asignaturas.
+     * @throws IOException Si ocurre un fallo en la conexión o el parseo.
      */
     public static Alumno obtenerAlumno(ServletContext context, HttpSession session)
             throws IOException {
 
-        // Obtener datos de la sesión
+        // Validación previa: asegúrate de que la sesión contiene lo necesario
         String apiKey = (String) session.getAttribute("apiKey");
         String sessionCookie = (String) session.getAttribute("sessionCookie");
         String dni = (String) session.getAttribute("dni");
 
-        // 1) Obtener la información del alumno en formato JSON
-        String alumnoJson = ClienteCentro.obtenerInstancia()
-                .obtenerRecurso("/alumnos/" + dni, apiKey, sessionCookie);
+        if (apiKey == null || sessionCookie == null || dni == null) {
+            throw new IOException("Sesión inválida: faltan apiKey, sessionCookie o dni");
+        }
 
-        Alumno alumno = gson.fromJson(alumnoJson, Alumno.class);
+        ClienteCentro cliente = ClienteCentro.obtenerInstancia();
 
-        // 2) Obtener las asignaturas del alumno en formato JSON
-        String asignaturasJson = ClienteCentro.obtenerInstancia()
-                .obtenerRecurso("/alumnos/" + dni + "/asignaturas", apiKey, sessionCookie);
+        // 1) Obtener datos básicos del alumno
+        String jsonAlumno = cliente.obtenerRecurso("/alumnos/" + dni, apiKey, sessionCookie);
+        if (jsonAlumno == null || jsonAlumno.isEmpty()) {
+            throw new IOException("No se recibió información del alumno");
+        }
 
-        // 3) Convertir el JSON de asignaturas a una lista de objetos Asignatura
-        List<Asignatura> asignaturas = gson.fromJson(asignaturasJson,
-        new TypeToken<List<Asignatura>>(){}.getType());
+        Alumno alumno;
+        try {
+            alumno = gson.fromJson(jsonAlumno, Alumno.class);
+            System.out.println(">> JSON Alumno: " + jsonAlumno);
+        } catch (Exception e) {
+            throw new IOException("Error al parsear JSON del alumno", e);
+        }
 
-        // 4) Asignar las asignaturas al objeto alumno
-        alumno.setAsignaturas(asignaturas);
+        if (alumno == null) {
+            throw new IOException("El JSON recibido no contenía datos válidos del alumno");
+        }
 
-        // Retornar el alumno con sus asignaturas
+        // 2) Obtener asignaturas del alumno
+        String jsonAsignaturas = cliente.obtenerRecurso("/alumnos/" + dni + "/asignaturas", apiKey, sessionCookie);
+        System.out.println(">> JSON Asignaturas: " + jsonAsignaturas);
+        if (jsonAsignaturas == null || jsonAsignaturas.isEmpty()) {
+            throw new IOException("No se recibieron asignaturas para el alumno");
+        }
+
+        List<Asignatura> asignaturas;
+        try {
+            asignaturas = gson.fromJson(jsonAsignaturas, new TypeToken<List<Asignatura>>() {}.getType());
+        } catch (Exception e) {
+            throw new IOException("Error al parsear JSON de asignaturas", e);
+        }
+
+        alumno.setAsignaturas(asignaturas != null ? asignaturas : List.of());
+   
+
         return alumno;
     }
 }
