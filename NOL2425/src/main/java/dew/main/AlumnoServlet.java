@@ -72,7 +72,7 @@ public class AlumnoServlet extends HttpServlet {
         request.setAttribute("alumno", alumno);
 
         // Redirige a la página ficha_alumno.html para mostrar los detalles del alumno
-        request.getRequestDispatcher("/alumno/ficha_alumno.html").forward(request, response); //hay que hacerlo con .jsp
+        request.getRequestDispatcher("/alumno/ficha_alumno.jsp").forward(request, response); //hay que hacerlo con .jsp
     }
 
     /**
@@ -87,6 +87,6 @@ public class AlumnoServlet extends HttpServlet {
         request.setAttribute("alumnos", alumno);
 
         // Redirige a la página lista_alumnos.html para mostrar todos los alumnos
-        request.getRequestDispatcher("/alumno/lista_alumnos.html").forward(request, response); //hay que hacerlo con .jsp
+        request.getRequestDispatcher("/alumno/lista_alumnos.jsp").forward(request, response); //hay que hacerlo con .jsp
     }
 }
