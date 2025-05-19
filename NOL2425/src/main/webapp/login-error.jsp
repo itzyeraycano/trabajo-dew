@@ -17,7 +17,7 @@
                 <p class="card-text">Algo salió mal durante el proceso de autenticación.</p>
                 <p class="card-text">Haz clic en el siguiente botón para volver a intentarlo.</p>
                 
-                <a href="login.jsp" class="btn btn-primary mt-3">Volver al login</a>
+                <a href="ficha_alumno.jsp" class="btn btn-primary mt-3">Volver al login</a>
             </div>
         </div>
     </div>
