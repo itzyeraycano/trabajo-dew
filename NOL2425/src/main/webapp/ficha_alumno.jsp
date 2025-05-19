@@ -25,18 +25,28 @@
 			  </a>
 			</div>
         
-          <section class="datos-foto-container">
-            <div class="datos-personales">
-              <%
-				  Alumno alumno = (Alumno) request.getAttribute("alumno");
-				  if (alumno == null) {
-			  %>
-				  <p class="text-danger">Error: no se pudo cargar la ficha del alumno.</p>
-			  <%
-				  return;
-				  }
-			  %>
+          <section class="datos-foto-container row align-items-start mb-4">
+            <%
+              Alumno alumno = (Alumno) request.getAttribute("alumno");
+              if (alumno == null) {
+            %>
+                <p class="text-danger">Error: no se pudo cargar la ficha del alumno.</p>
+            <%
+                return;
+              }
 
+              String nombreImagen = alumno.getNombre().replaceAll("\\s+", "") + ".jpeg";
+              String rutaImagen = request.getContextPath() + "/imagenes/alumnos/" + nombreImagen;
+            %>
+
+            <!-- Imagen del alumno -->
+            <div class="col-md-4 text-center mb-3">
+              <img src="<%= rutaImagen %>" alt="Foto de <%= alumno.getNombre() %>"
+                   class="img-fluid rounded border" style="max-height: 250px;">
+            </div>
+
+            <!-- Datos personales -->
+            <div class="col-md-8">
               <p><i class="fas fa-user me-2"></i>
                  <strong>Nombre:</strong> ${alumno.nombre}</p>
               <p><i class="fas fa-user-tag me-2"></i>
