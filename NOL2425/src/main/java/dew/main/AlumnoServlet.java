@@ -22,6 +22,16 @@ public class AlumnoServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+    	
+    	HttpSession sesion = request.getSession();
+		
+		String action = request.getParameter("action");
+    	
+    	if(action != null && action.equals("cierra")) { //si se da la orden de cerrar sesión...
+			sesion.invalidate();
+			response.sendRedirect("/NOL2425/");
+			return;
+		}
 
         // Verifica si el usuario está autenticado
         if (!esAutenticado(request, response)) {
@@ -42,6 +52,11 @@ public class AlumnoServlet extends HttpServlet {
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
+    
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		doGet(request, response);
+	}
 
     /**
      * Verifica si el usuario está autenticado.
@@ -49,7 +64,7 @@ public class AlumnoServlet extends HttpServlet {
      */
     private boolean esAutenticado(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
-        HttpSession session = request.getSession(false);
+        HttpSession session = request.getSession();
         if (session == null ||
             session.getAttribute("apiKey") == null ||
             session.getAttribute("sessionCookie") == null) {

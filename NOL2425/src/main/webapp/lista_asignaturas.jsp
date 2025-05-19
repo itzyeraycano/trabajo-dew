@@ -10,12 +10,19 @@
 	<body>
 		<div class="container">
 		    <header class="mb-4 rounded">
-				<h2><em>Notas OnLine</em>. Asignaturas <br>
-					del/la alumn@ <span class="nombre_alumno"></span>
-				</h2>
-				<p><span>En esta página se muestran las asignaturas en las que estás matriculad@.</span><br>
-				Al pulsar en una podrás acceder tu calificación.</p>
-		    </header>
+                <h2><em>Notas OnLine</em>. Asignaturas <br>
+                    del/la alumn@ <span class="nombre_alumno"></span>
+                </h2>
+                <p><span>En esta página se muestran las asignaturas en las que estás matriculad@.</span><br>
+                Al pulsar en una podrás acceder tu calificación.</p>
+            
+                <!-- Botón de Cerrar Sesión -->
+				<div class="d-flex justify-content-end mb-3">
+				  <a href="/NOL2425/alumno?action=cierra" class="btn btn-outline-danger btn-sm" target="_self">
+				    Cerrar sesión
+				  </a>
+				</div>
+            </header>
 	
 			<!-- Asignaturas y grupo -->
 			<div class="row mb-4">

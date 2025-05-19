@@ -11,9 +11,18 @@
 		<div class="container my-4">
 		  <div class="card shadow">
 		    <div class="card-body">
+		      
+		      <!-- Botón de Cerrar Sesión -->
+				<div class="d-flex justify-content-end mb-3">
+				  <a href="/NOL2425/alumno?action=cierra" class="btn btn-outline-danger btn-sm" target="_self">
+				    Cerrar sesión
+				  </a>
+				</div>
+	
 		      <div class="student-header mb-3">
 		        <span class="apellidos_alumno">Fernandez Gómez</span>, <span class="nombre_alumno">Maria</span> (<span class="dni_alumno">23456387R</span>)
 		      </div>
+	
 		      <div class="row">
 		        <!-- Imagen del alumno -->
 		        <div class="col-md-3 text-center">
