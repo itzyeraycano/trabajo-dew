@@ -6,8 +6,6 @@ public class Alumno {
   private String dni;
   private String nombre;
   private String apellidos;
-  
-  // ahora guardamos directamente la lista de Asignatura
   private List<Asignatura> asignaturas;
 
   public String getDni() { return dni; }
