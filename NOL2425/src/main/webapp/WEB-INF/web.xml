@@ -25,13 +25,13 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
-  <!-- Filtro AuthFilter -->
+  <!-- Filtro AuthFiltro -->
   <filter>
-    <filter-name>AuthFilter</filter-name>
-    <filter-class>dew.filtros.AuthFilter</filter-class>
+    <filter-name>AuthFiltro</filter-name>
+    <filter-class>dew.filtros.AuthFiltro</filter-class>
   </filter>
   <filter-mapping>
-    <filter-name>AuthFilter</filter-name>
+    <filter-name>AuthFiltro</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 

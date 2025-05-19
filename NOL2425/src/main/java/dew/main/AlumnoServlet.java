@@ -12,7 +12,7 @@ import java.util.List;
  * Servlet que maneja las peticiones relacionadas con los datos de los alumnos.
  * Se puede acceder a los detalles de un solo alumno o a la lista de todos los alumnos.
  */
-@WebServlet({"/alumno", "/alumnos"})
+
 public class AlumnoServlet extends HttpServlet {
 
     /**
