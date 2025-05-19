@@ -1,40 +1,69 @@
 package dew.main;
 
-import dew.servicios.ClienteCentro;
+import dew.clases.Alumno;
+import dew.servicios.ServicioAlumno;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 import java.io.IOException;
+import java.util.List;
 
-/**
- * Devuelve el JSON de los alumnos con apiKey + sessionCookie.
- */
+@WebServlet({"/alumno","/alumnos"})
 public class AlumnoServlet extends HttpServlet {
 
-    private static final long serialVersionUID = 1L;
+  @Override
+  protected void doGet(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
 
-	@Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Sin sesión");
-            return;
-        }
-
-        String apiKey        = (String) session.getAttribute("apiKey");
-        String sessionCookie = (String) session.getAttribute("sessionCookie");
-        String dni 			 = (String) session.getAttribute("dni");
-        if (apiKey == null || sessionCookie == null || dni == null) {
-            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED,
-                           "No autenticado con CentroEducativo");
-            return;
-        }
-
-        String baseUrl = getServletContext().getInitParameter("centro.baseUrl");
-        ClienteCentro client = ClienteCentro.getInstance(baseUrl);
-        String json = client.getAlumnoPorDNI(apiKey, sessionCookie, dni);
-
-        resp.setContentType("application/json;charset=UTF-8");
-        resp.getWriter().write(json);
+    if (!checkAuthentication(req, resp)) {
+      return;
     }
+    
+    //dos opciones de paths
+    String path = req.getServletPath();
+    switch (path) {
+      case "/alumno":
+        showPerfil(req, resp);
+        break;
+      case "/alumnos":
+        showLista(req, resp);
+        break;
+      default:
+        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+    }
+  }
+
+  //Si ya no hay sesion valida envía 401 
+  private boolean checkAuthentication(HttpServletRequest req, HttpServletResponse resp)
+      throws IOException {
+    HttpSession session = req.getSession(false);
+    if (session == null ||
+        session.getAttribute("apiKey") == null ||
+        session.getAttribute("sessionCookie") == null) {
+      resp.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                     "No autenticado con CentroEducativo");
+      return false;
+    }
+    return true;
+  }
+
+  // GET un alumno y lo enseña en ficha_alumno.html 
+  private void showPerfil(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
+    HttpSession session = req.getSession();
+    Alumno alumno = ServicioAlumno.fetchOne(getServletContext(), session);
+    req.setAttribute("alumno", alumno);
+    req.getRequestDispatcher("/alumno/ficha_alumno.html")
+       .forward(req, resp);
+  }
+
+  // Carga todos los alumnos y los muestra en lista_alumnos.html 
+  private void showLista(HttpServletRequest req, HttpServletResponse resp)
+      throws ServletException, IOException {
+    HttpSession session = req.getSession();
+    Alumno  alumno = ServicioAlumno.fetchOne(getServletContext(), session);
+    req.setAttribute("alumnos", alumno);
+    req.getRequestDispatcher("/alumno/lista_alumnos.html")
+       .forward(req, resp);
+  }
 }
