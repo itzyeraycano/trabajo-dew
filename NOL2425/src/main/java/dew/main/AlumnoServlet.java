@@ -65,15 +65,39 @@ public class AlumnoServlet extends HttpServlet {
      */
     private void mostrarPerfil(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        Alumno alumno = ServicioAlumno.obtenerAlumno(getServletContext(), session);
 
-        // Pasa el objeto Alumno como atributo para que esté disponible en la vista
-        request.setAttribute("alumno", alumno);
+        System.out.println(">> Entrando en mostrarPerfil()");
 
-        // Redirige a la página ficha_alumno.jsp para mostrar los detalles del alumno
-        request.getRequestDispatcher("ficha_alumno.jsp").forward(request, response); 
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            System.out.println(">> No hay sesión");
+            request.setAttribute("error", "Sesión no válida.");
+            request.getRequestDispatcher("login-error.jsp").forward(request, response);
+            return;
+        }
+
+        try {
+            Alumno alumno = ServicioAlumno.obtenerAlumno(getServletContext(), session);
+            if (alumno == null) {
+                System.out.println(">> Alumno es null");
+                request.setAttribute("error", "No se pudo cargar la ficha del alumno.");
+                request.getRequestDispatcher("login-error.jsp").forward(request, response);
+                return;
+            }
+
+            System.out.println(">> Alumno obtenido: " + alumno.getDni());
+
+            request.setAttribute("alumno", alumno);
+            request.getRequestDispatcher("ficha_alumno.jsp").forward(request, response);
+        } catch (Exception e) {
+            System.out.println(">> ERROR en mostrarPerfil: " + e.getMessage());
+            e.printStackTrace();
+            request.setAttribute("error", "Error interno al cargar el alumno.");
+            request.getRequestDispatcher("login-error.jsp").forward(request, response);
+        }
     }
+
+
 
     /**
      * Muestra la lista de todos los alumnos.

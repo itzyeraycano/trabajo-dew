@@ -19,7 +19,7 @@
 			<div class="row">
 				<div class="col-md-8">
 					<h2>Si eres alumn@...</h2>
-					<p>Podrás <a href="<%= request.getContextPath() %>/ficha_alumno.jsp">consultar</a> tus calificaciones... Debes contar con tus datos<br>
+					<p>Podrás <a href="<%= request.getContextPath() %>/alumno">consultar</a> tus calificaciones... Debes contar con tus datos<br>
 					identificativos para acceder.</p>
 
 					<h2>Si eres profesor@...</h2>
