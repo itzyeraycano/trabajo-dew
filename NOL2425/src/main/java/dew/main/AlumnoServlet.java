@@ -71,8 +71,8 @@ public class AlumnoServlet extends HttpServlet {
         // Pasa el objeto Alumno como atributo para que esté disponible en la vista
         request.setAttribute("alumno", alumno);
 
-        // Redirige a la página ficha_alumno.html para mostrar los detalles del alumno
-        request.getRequestDispatcher("/alumno/ficha_alumno.jsp").forward(request, response); //hay que hacerlo con .jsp
+        // Redirige a la página ficha_alumno.jsp para mostrar los detalles del alumno
+        request.getRequestDispatcher("ficha_alumno.jsp").forward(request, response); 
     }
 
     /**
@@ -87,6 +87,6 @@ public class AlumnoServlet extends HttpServlet {
         request.setAttribute("alumnos", alumno);
 
         // Redirige a la página lista_alumnos.html para mostrar todos los alumnos
-        request.getRequestDispatcher("/alumno/lista_alumnos.jsp").forward(request, response); //hay que hacerlo con .jsp
+        request.getRequestDispatcher("lista_alumnos.jsp").forward(request, response);
     }
 }
