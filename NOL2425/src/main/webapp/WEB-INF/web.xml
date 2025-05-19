@@ -45,34 +45,42 @@
     <url-pattern>/alumno</url-pattern>
   </servlet-mapping>
   
-  <!-- Seguridad sobre esos endpoints -->
+   <!-- Zona protegida: -->
   <security-constraint>
     <web-resource-collection>
-      <web-resource-name>Recursos Protegidos</web-resource-name>
-      <url-pattern>/alumno</url-pattern>
+      <web-resource-name>Zona protegida</web-resource-name>
+      <url-pattern>*.jsp</url-pattern>
     </web-resource-collection>
     <auth-constraint>
       <role-name>rolalu</role-name>
-      <role-name>rolpro</role-name>
     </auth-constraint>
   </security-constraint>
+  <!-- Zona no-protegida: -->
+  <security-constraint>
+  <web-resource-collection>
+    <web-resource-name>Página pública</web-resource-name>
+    <url-pattern>/index.jsp</url-pattern>
+  </web-resource-collection>
+  <!-- No hay <auth-constraint>, lo que la hace pública -->
+</security-constraint>
 
-  <!-- Seguridad con FORM login -->
+
+  <!-- Configuración de login con formulario -->
   <login-config>
     <auth-method>FORM</auth-method>
+    <realm-name>Zona alumnos</realm-name>
     <form-login-config>
-      <form-login-page>/login.html</form-login-page>
-      <form-error-page>/login.html?error=true</form-error-page>
+      <form-login-page>/login.jsp</form-login-page>
+      <form-error-page>/login-error.jsp</form-error-page>
     </form-login-config>
   </login-config>
+
 
   <!-- Roles -->
   <security-role>
     <role-name>rolalu</role-name>
   </security-role>
-  <security-role>
-    <role-name>rolpro</role-name>
-  </security-role>
+
 
   <!-- Welcome -->
   <welcome-file-list>
