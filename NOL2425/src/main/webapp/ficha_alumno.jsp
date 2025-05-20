@@ -12,6 +12,13 @@
 	<body>
 	  <div class="container ficha-container">
 	    <h2 class="text-center titulo mb-4">Ficha del Alumno</h2>
+	    
+	    <!-- Botón de Cerrar Sesión -->
+            <div class="d-flex justify-content-end mb-3">
+              <a href="/NOL2425/alumno?action=cierra" class="btn btn-outline-danger btn-sm" target="_self">
+                Cerrar sesión
+              </a>
+            </div>
 	
 	    <%
 	      Alumno alumno = (Alumno) request.getAttribute("alumno");
@@ -37,13 +44,6 @@
                class="img-fluid rounded border" style="max-height: 250px;">
 	      </div>
 	    </div>
-
-        <!-- Botón de Cerrar Sesión -->
-            <div class="d-flex justify-content-end mb-3">
-              <a href="/NOL2425/alumno?action=cierra" class="btn btn-outline-danger btn-sm" target="_self">
-                Cerrar sesión
-              </a>
-            </div>
 	
 	    <!-- TABLA DE ASIGNATURAS -->
 	    <h4 class="mb-3"><i class="fas fa-book-open me-2"></i>Asignaturas Matriculadas</h4>

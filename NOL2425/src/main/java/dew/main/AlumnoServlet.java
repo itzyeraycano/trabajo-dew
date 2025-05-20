@@ -27,6 +27,16 @@ public class AlumnoServlet extends HttpServlet {
         if (!esAutenticado(request, response)) {
             return;
         }
+        
+        HttpSession session = request.getSession();
+		
+		String action = request.getParameter("action");
+        
+        if(action != null && action.equals("cierra")) { //si se da la orden de cerrar sesión...
+			session.invalidate();
+			response.sendRedirect("/NOL2425/");
+			return;
+		}
 
         // Recupera la ruta solicitada
         String ruta = request.getServletPath();
