@@ -7,7 +7,7 @@ public class Asignatura {
 	
 
   @SerializedName(value = "codigo", alternate = { "asignatura" })
-  private String codigo;
+  private String acronimo;
 
   @SerializedName("nota")
   private String nota;
@@ -18,11 +18,11 @@ public class Asignatura {
   private double creditos;
 
   // getters y setters
-  public String getCodigo(){ 
-	  return codigo; }
+  public String getAcronimo(){ 
+	  return acronimo; }
   
-  public void setCodigo(String c){ 
-	  this.codigo = c;}
+  public void setAcronimo(String a){ 
+	  this.acronimo = a;}
 
   public String getNota(){
 	  return nota; }

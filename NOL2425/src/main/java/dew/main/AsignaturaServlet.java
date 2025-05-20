@@ -29,18 +29,23 @@ public class AsignaturaServlet extends HttpServlet {
         }
 
         // Extraer el acrónimo de la asignatura desde el parámetro GET
-        String codigo = request.getParameter("codigo");
-        if (codigo == null || codigo.trim().isEmpty()) {
+        String acronimo = request.getParameter("acronimo");
+        if (acronimo == null || acronimo.trim().isEmpty()) {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta el parámetro 'acronimo'");
+            return;
+        }
+        if (acronimo == null || acronimo.trim().isEmpty()) {
+            response.sendRedirect("lista_asignaturas.jsp"); // o index.jsp
             return;
         }
 
         // Obtener los detalles de la asignatura utilizando el servicio
         Asignatura asignaturaDetallada = ServicioAsignatura.obtenerDetallesAsignatura(
-                getServletContext(), sesion, codigo);
+                getServletContext(), sesion, acronimo);
 
         // Enviar los datos al JSP para su visualización
         request.setAttribute("asignatura", asignaturaDetallada);
         request.getRequestDispatcher("/info_asignatura.jsp").forward(request, response);
     }
+
 }
