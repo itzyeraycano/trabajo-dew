@@ -11,10 +11,12 @@
 </head>
 <body>
   <div class="container py-5">
-    <header class="text-center mb-5">
-      <h1 class="display-5 text-primary">
-        <i class="fas fa-user-graduate me-3"></i>Ficha del Alumno
-      </h1>
+    <header class="text-center mb-5 rounded shadow-sm">
+      <div class="bg-primary text-white py-4 rounded">
+        <h1 class="display-5">
+          <i class="fas fa-user-graduate me-3"></i>Ficha del Alumno
+        </h1>
+      </div>
     </header>
 
     <main class="pb-5">
