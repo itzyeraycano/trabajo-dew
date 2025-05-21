@@ -9,11 +9,17 @@
     	<link href="<%= request.getContextPath() %>/css/estilos.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
-		<div class="container">
-		    <header class="text-center mb-5 rounded">
-	      		<h1>Bienvenid@ a <em>Notas OnLine</em></h1>
-				<p class="lead mb-0"><strong>Una aplicación que cuesta más de lo que parece para conseguir menos de<br> 
-		      lo que creías... ¿¡Qué más se puede pedir!?</strong></p>
+		<div class="container py-5">
+		    <header class="text-center mb-5 rounded shadow-sm">
+				<div class="bg-primary text-white py-4 rounded">
+					<h1 class="display-5">
+						<i class="bi bi-mortarboard-fill me-3"></i>Bienvenid@ a <em>Notas OnLine</em>
+					</h1>
+					<p class="lead mb-0">
+						<strong>Una aplicación que cuesta más de lo que parece para conseguir menos de<br> 
+						lo que creías... ¿¡Qué más se puede pedir!?</strong>
+					</p>
+				</div>
 		    </header>
 		    
 			<!-- Secciones de acceso -->
