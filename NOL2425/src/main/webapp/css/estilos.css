@@ -1,23 +1,92 @@
 @charset "UTF-8";
 
+:root {
+	--primary-blue: #1a73e8;
+	--secondary-blue: #4285f4;
+	--primary-green: #34a853;
+	--secondary-green: #40c463;
+	--light-bg: #f8f9fa;
+}
+
+body {
+	background-color: var(--light-bg);
+}
+
 header {
-	background: linear-gradient(to right, #000, #444);
+	background: linear-gradient(135deg, var(--primary-blue), var(--secondary-blue));
 	color: white;
-	padding: 2rem 1rem;
-	text-align: center;
-}
-header h1 {
-	font-style: italic;
-}
-header em {
-	color: #b2ff59;
-	font-style: normal;
-}
-footer {
-	font-size: 0.9rem;
-	font-style: italic;
+	padding: 2rem;
 	margin-top: 2rem;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+	font-size: 2.5rem;
+	margin-bottom: 1rem;
+}
+
+.btn-primary {
+	background-color: var(--primary-blue);
+	border-color: var(--primary-blue);
+}
+
+.btn-primary:hover {
+	background-color: var(--secondary-blue);
+	border-color: var(--secondary-blue);
+}
+
+.btn-success {
+	background-color: var(--primary-green);
+	border-color: var(--primary-green);
+}
+
+.btn-success:hover {
+	background-color: var(--secondary-green);
+	border-color: var(--secondary-green);
+}
+
+a {
+	color: var(--primary-blue);
+	text-decoration: none;
+}
+
+a:hover {
+	color: var(--secondary-blue);
+	text-decoration: underline;
+}
+
+.card {
+	border-radius: 10px;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-control:focus {
+	border-color: var(--primary-blue);
+	box-shadow: 0 0 0 0.2rem rgba(26, 115, 232, 0.25);
+}
+
+.table {
+	background-color: white;
+	border-radius: 8px;
+	overflow: hidden;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.table thead {
+	background-color: var(--primary-blue);
+	color: white;
+}
+
+footer {
+	color: #666;
+	font-size: 0.9rem;
 	text-align: center;
+	padding: 1rem 0;
+}
+
+.bg-light {
+	background-color: white !important;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .student-img {

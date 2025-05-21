@@ -8,31 +8,44 @@
 		<link href="<%= request.getContextPath() %>/css/estilos.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
-		<div class="container my-4">
-			<h2>Iniciar Sesión - Alumno</h2>
-			<form action="j_security_check" method="post" class="ms-3">
-			  <div class="row mb-2">
-			    <div class="col-sm-3 text-end">
-			      <label for="usuarioAlumno" class="col-form-label col-form-label-sm">Usuario:</label>
-			    </div>
-			    <div class="col-sm-6">
-			      <input type="text" id="usuarioAlumno" name="j_username" class="form-control form-control-sm" required>
-			    </div>
-			  </div>
-			  <div class="row mb-2">
-			    <div class="col-sm-3 text-end">
-			      <label for="contrasenaAlumno" class="col-form-label col-form-label-sm">Contraseña:</label>
-			    </div>
-			    <div class="col-sm-6">
-			      <input type="password" id="contrasenaAlumno" name="j_password" class="form-control form-control-sm" required>
-			    </div>
-			  </div>
-			  <div class="row">
-			    <div class="col-sm-6 offset-sm-3">
-			      <button type="submit" class="btn btn-primary btn-sm w-100">Iniciar sesión</button>
-			    </div>
-			  </div>
-			</form>
+		<div class="container">
+			<div class="row justify-content-center mt-5">
+				<div class="col-md-6">
+					<div class="card shadow">
+						<div class="card-header bg-primary text-white text-center py-3">
+							<h2 class="h4 mb-0">Iniciar Sesión - Alumno</h2>
+						</div>
+						<div class="card-body p-4">
+							<form action="j_security_check" method="post">
+								<div class="mb-3">
+									<label for="usuarioAlumno" class="form-label">Usuario</label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="bi bi-person"></i></span>
+										<input type="text" id="usuarioAlumno" name="j_username" class="form-control" required>
+									</div>
+								</div>
+								<div class="mb-4">
+									<label for="contrasenaAlumno" class="form-label">Contraseña</label>
+									<div class="input-group">
+										<span class="input-group-text"><i class="bi bi-lock"></i></span>
+										<input type="password" id="contrasenaAlumno" name="j_password" class="form-control" required>
+									</div>
+								</div>
+								<div class="d-grid">
+									<button type="submit" class="btn btn-primary btn-lg">Iniciar sesión</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="text-center mt-3">
+						<a href="<%= request.getContextPath() %>/" class="text-decoration-none">
+							<i class="bi bi-arrow-left"></i> Volver al inicio
+						</a>
+					</div>
+				</div>
+			</div>
 		</div>
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 	</body>
 </html>
