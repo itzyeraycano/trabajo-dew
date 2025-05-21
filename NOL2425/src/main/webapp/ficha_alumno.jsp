@@ -10,11 +10,19 @@
 	  <link href="./css/estilos.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
-	  <div class="container ficha-container">
-	    <h2 class="text-center titulo mb-4">Ficha del Alumno</h2>
-	    
+	  <!-- Banner superior con título -->
+	  <div class="banner-container mb-4">
+	    <div class="container">
+	      <div class="d-flex align-items-center justify-content-center py-4">
+	        <i class="fas fa-user-graduate me-3 fs-2"></i>
+	        <h1 class="titulo mb-0">Ficha del Alumno</h1>
+	      </div>
+	    </div>
+	  </div>
+
+	  <div class="container">
 	    <!-- Botón de Cerrar Sesión -->
-            <div class="d-flex justify-content-end mb-3">
+            <div class="d-flex justify-content-end mb-4">
               <a href="/NOL2425/alumno?action=cierra" class="btn btn-outline-danger btn-sm" target="_self">
                 Cerrar sesión
               </a>
@@ -32,61 +40,84 @@
 	      }
 	    %>
 	
-	    <!-- DATOS DEL ALUMNO -->
-	    <div class="row mb-4">
-	      <div class="col-md-6">
-	        <p><i class="fas fa-user me-2"></i><strong>Nombre:</strong> ${alumno.nombre}</p>
-	        <p><i class="fas fa-user-tag me-2"></i><strong>Apellidos:</strong> ${alumno.apellidos}</p>
-	        <p><i class="fas fa-id-card me-2"></i><strong>DNI:</strong> ${alumno.dni}</p>
+	    <div class="panel">
+	      <!-- DATOS PERSONALES -->
+	      <div class="info-block">
+	        <h3 class="mb-4">
+	          <i class="fas fa-address-card me-2 text-primary"></i>
+	          Datos Personales
+	        </h3>
+	        <div class="row">
+	          <div class="col-md-8">
+	            <div class="datos-field mb-3">
+	              <label class="fw-bold">Nombre</label>
+	              <div class="datos-value">${alumno.nombre}</div>
+	            </div>
+	            <div class="datos-field mb-3">
+	              <label class="fw-bold">Apellidos</label>
+	              <div class="datos-value">${alumno.apellidos}</div>
+	            </div>
+	            <div class="datos-field">
+	              <label class="fw-bold">DNI</label>
+	              <div class="datos-value">${alumno.dni}</div>
+	            </div>
+	          </div>
+	          <div class="col-md-4">
+	            <img src="./img/<%= alumno.getDni() + ".jpeg" %>" 
+	                 alt="Foto de <%= alumno.getNombre() %>"
+	                 class="img-fluid rounded student-photo">
+	          </div>
+	        </div>
 	      </div>
-	      <div class="col-md-6 text-end">
-	        <img src="./img/<%= alumno.getDni() + ".jpeg" %>" alt="Foto de <%= alumno.getNombre() %>"
-               class="img-fluid rounded border" style="max-height: 250px;">
-	      </div>
-	    </div>
 	
-	    <!-- TABLA DE ASIGNATURAS -->
-	    <h4 class="mb-3"><i class="fas fa-book-open me-2"></i>Asignaturas Matriculadas</h4>
-	    <div class="table-responsive">
-	      <table class="table table-bordered table-striped align-middle">
-	        <thead class="table-primary">
-	          <tr>
-	            <th>Asignatura</th>
-	            <th>Nota</th>
-	            <th class="text-center">Acciones</th>
-	          </tr>
-	        </thead>
-	        <tbody>
-	          <%
-	            List<Asignatura> lista = alumno.getAsignaturas();
-	            if (lista != null && !lista.isEmpty()) {
-	              for (Asignatura asig : lista) {
-	          %>
-	          <tr>
-	            <td><%= asig.getAcronimo() %></td>
-	            <td>
+	      <!-- ASIGNATURAS MATRICULADAS -->
+	      <div class="info-block mt-4">
+	        <h3 class="mb-4">
+	          <i class="fas fa-book-open me-2 text-success"></i>
+	          Asignaturas Matriculadas
+	        </h3>
+	        <div class="table-responsive">
+	          <table class="table table-hover align-middle mb-0">
+	            <thead>
+	              <tr>
+	                <th>Asignatura</th>
+	                <th>Nota</th>
+	                <th class="text-center">Acciones</th>
+	              </tr>
+	            </thead>
+	            <tbody>
 	              <%
-	                String nota = asig.getNota();
-	                out.print((nota == null || nota.isEmpty()) ? "—" : nota);
+	                List<Asignatura> lista = alumno.getAsignaturas();
+	                if (lista != null && !lista.isEmpty()) {
+	                  for (Asignatura asig : lista) {
 	              %>
-	            </td>
-	            <td class="text-center">
-	              <a class="btn btn-outline-primary btn-sm"
-	                 href="<%= request.getContextPath() %>/asignatura?acronimo=<%= asig.getAcronimo() %>">
-	                <i class="fas fa-eye"></i> Ver
-	              </a>
-	            </td>
-	          </tr>
-	          <%
-	              }
-	            } else {
-	          %>
-	          <tr>
-	            <td colspan="3" class="text-center">No hay asignaturas matriculadas</td>
-	          </tr>
-	          <% } %>
-	        </tbody>
-	      </table>
+	              <tr>
+	                <td><%= asig.getAcronimo() %></td>
+	                <td>
+	                  <%
+	                    String nota = asig.getNota();
+	                    out.print((nota == null || nota.isEmpty()) ? "—" : nota);
+	                  %>
+	                </td>
+	                <td class="text-center">
+	                  <a class="btn btn-outline-primary btn-sm"
+	                     href="<%= request.getContextPath() %>/asignatura?acronimo=<%= asig.getAcronimo() %>">
+	                    <i class="fas fa-eye me-1"></i>Ver detalles
+	                  </a>
+	                </td>
+	              </tr>
+	              <%
+	                  }
+	                } else {
+	              %>
+	              <tr>
+	                <td colspan="3" class="text-center">No hay asignaturas matriculadas</td>
+	              </tr>
+	              <% } %>
+	            </tbody>
+	          </table>
+	        </div>
+	      </div>
 	    </div>
 	  </div>
 	

@@ -9,42 +9,76 @@
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
 </head>
 <body>
-  <div class="container col-lg-6 col-md-8 col-sm-12">
-    <main class="text-center">
-      <h2 class="mb-4"><i class="fas fa-book icono me-2"></i>Información de la Asignatura</h2>
-
-      <div class="asignatura-panel">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-          <h3 class="text-start mb-0">${asignatura.nombre}</h3>
-          <span class="badge badge-blue">${asignatura.acronimo}</span>
-        </div>
-
-        <div class="info-block text-start">
-          <h4><i class="fas fa-chalkboard-teacher me-2"></i>Profesor responsable</h4>
-          <p>Nombre del Profesor</p>
-        </div>
-
-        <div class="info-block text-start">
-          <h4><i class="fas fa-circle-info me-2"></i>Datos generales</h4>
-          <ul class="list-unstyled">
-            <li><strong>Curso:</strong> ${asignatura.curso}</li>
-            <li><strong>Cuatrimestre:</strong> ${asignatura.cuatrimestre}</li>
-            <li><strong>Créditos:</strong> ${asignatura.creditos}</li>
-          </ul>
-        </div>
-
-        <div class="text-end mt-4">
-          <button class="btn btn-volver" onclick="history.back()">
-            <i class="fas fa-arrow-left me-2"></i>Volver
-          </button>
-        </div>
+  <!-- Banner superior con título -->
+  <div class="banner-container mb-4">
+    <div class="container">
+      <div class="d-flex align-items-center justify-content-center py-4">
+        <i class="fas fa-book-open me-3 fs-2"></i>
+        <h1 class="titulo mb-0">Información de Asignatura</h1>
       </div>
-    </main>
+    </div>
   </div>
 
+  <div class="container">
+    <div class="panel">
+      <!-- Nombre de la asignatura -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">${asignatura.nombre}</h2>
+        <span class="badge badge-gradient">${asignatura.acronimo}</span>
+      </div>
+
+      <!-- Profesor -->
+      <div class="info-block">
+        <h3 class="mb-4">
+          <i class="fas fa-chalkboard-teacher me-2 text-primary"></i>
+          Profesor
+        </h3>
+        <div class="datos-field">
+          <div class="datos-value">Nombre del Profesor</div>
+        </div>
+      </div>
+
+      <!-- Detalles de la Asignatura -->
+      <div class="info-block">
+        <h3 class="mb-4">
+          <i class="fas fa-circle-info me-2 text-success"></i>
+          Detalles de la Asignatura
+        </h3>
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="detail-card">
+              <label class="detail-label">Curso</label>
+              <div class="detail-value">${asignatura.curso}</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="detail-card">
+              <label class="detail-label">Cuatrimestre</label>
+              <div class="detail-value">${asignatura.cuatrimestre}</div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <div class="detail-card">
+              <label class="detail-label">Créditos</label>
+              <div class="detail-value">${asignatura.creditos}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botones de navegación -->
+      <div class="d-flex justify-content-between mt-4">
+        <button class="btn btn-outline-primary" onclick="history.back()">
+          <i class="fas fa-arrow-left me-2"></i>Volver
+        </button>
+        <a href="/NOL2425" class="btn btn-outline-secondary">
+          <i class="fas fa-home me-2"></i>Inicio
+        </a>
+      </div>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
