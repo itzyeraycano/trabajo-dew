@@ -8,20 +8,19 @@
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
 <body>
-  <!-- Banner superior con título -->
-  <div class="banner-container mb-4">
-    <div class="container">
-      <div class="d-flex align-items-center justify-content-center py-4">
-        <i class="fas fa-book-open me-3 fs-2"></i>
-        <h1 class="titulo mb-0">Información de Asignatura</h1>
+  <div class="container py-4">
+    <!-- Header con estilo del index -->
+    <header class="text-center mb-5 rounded shadow-sm">
+      <div class="bg-primary text-white py-4 rounded">
+        <h1 class="display-5">
+          <i class="bi bi-journal-bookmark-fill me-3"></i>Información de Asignatura
+        </h1>
       </div>
-    </div>
-  </div>
+    </header>
 
-  <div class="container">
     <div class="panel">
       <!-- Nombre de la asignatura -->
       <div class="d-flex justify-content-between align-items-center mb-4">
@@ -32,7 +31,7 @@
       <!-- Profesor -->
       <div class="info-block">
         <h3 class="mb-4">
-          <i class="fas fa-chalkboard-teacher me-2 text-primary"></i>
+          <i class="bi bi-person-workspace me-2 text-primary"></i>
           Profesor
         </h3>
         <div class="datos-field">
@@ -43,7 +42,7 @@
       <!-- Detalles de la Asignatura -->
       <div class="info-block">
         <h3 class="mb-4">
-          <i class="fas fa-circle-info me-2 text-success"></i>
+          <i class="bi bi-info-circle me-2 text-success"></i>
           Detalles de la Asignatura
         </h3>
         <div class="row g-4">
@@ -71,10 +70,10 @@
       <!-- Botones de navegación -->
       <div class="d-flex justify-content-between mt-4">
         <button class="btn btn-outline-primary" onclick="history.back()">
-          <i class="fas fa-arrow-left me-2"></i>Volver
+          <i class="bi bi-arrow-left me-2"></i>Volver
         </button>
         <a href="/NOL2425" class="btn btn-outline-secondary">
-          <i class="fas fa-home me-2"></i>Inicio
+          <i class="bi bi-house me-2"></i>Inicio
         </a>
       </div>
     </div>

@@ -6,25 +6,24 @@
 	  <meta charset="UTF-8">
 	  <title>Ficha del Alumno</title>
 	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
-	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 	  <link href="./css/estilos.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
-	  <!-- Banner superior con título -->
-	  <div class="banner-container mb-4">
-	    <div class="container">
-	      <div class="d-flex align-items-center justify-content-center py-4">
-	        <i class="fas fa-user-graduate me-3 fs-2"></i>
-	        <h1 class="titulo mb-0">Ficha del Alumno</h1>
+	  <div class="container py-4">
+	    <!-- Header con estilo del index -->
+	    <header class="text-center mb-5 rounded shadow-sm">
+	      <div class="bg-primary text-white py-4 rounded">
+	        <h1 class="display-5">
+	          <i class="bi bi-person-vcard-fill me-3"></i>Ficha del Alumno
+	        </h1>
 	      </div>
-	    </div>
-	  </div>
+	    </header>
 
-	  <div class="container">
 	    <!-- Botón de Cerrar Sesión -->
             <div class="d-flex justify-content-end mb-4">
               <a href="/NOL2425/alumno?action=cierra" class="btn btn-outline-danger btn-sm" target="_self">
-                Cerrar sesión
+                <i class="bi bi-box-arrow-right me-2"></i>Cerrar sesión
               </a>
             </div>
 	
@@ -44,7 +43,7 @@
 	      <!-- DATOS PERSONALES -->
 	      <div class="info-block">
 	        <h3 class="mb-4">
-	          <i class="fas fa-address-card me-2 text-primary"></i>
+	          <i class="bi bi-person-badge me-2 text-primary"></i>
 	          Datos Personales
 	        </h3>
 	        <div class="row">
@@ -73,7 +72,7 @@
 	      <!-- ASIGNATURAS MATRICULADAS -->
 	      <div class="info-block mt-4">
 	        <h3 class="mb-4">
-	          <i class="fas fa-book-open me-2 text-success"></i>
+	          <i class="bi bi-journal-text me-2 text-success"></i>
 	          Asignaturas Matriculadas
 	        </h3>
 	        <div class="table-responsive">
@@ -102,7 +101,7 @@
 	                <td class="text-center">
 	                  <a class="btn btn-outline-primary btn-sm"
 	                     href="<%= request.getContextPath() %>/asignatura?acronimo=<%= asig.getAcronimo() %>">
-	                    <i class="fas fa-eye me-1"></i>Ver detalles
+	                    <i class="bi bi-eye me-1"></i>Ver detalles
 	                  </a>
 	                </td>
 	              </tr>
@@ -122,6 +121,5 @@
 	  </div>
 	
 	  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-	  <script src="${pageContext.request.contextPath}/js/ficha_alumno.js"></script>
 	</body>
 </html>
