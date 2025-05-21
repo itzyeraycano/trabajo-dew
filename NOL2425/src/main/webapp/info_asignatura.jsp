@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Detalles de Asignatura</title>
-  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/info_asignatura.css">
+  <link rel="stylesheet" href="${pageContext.request.contextPath}/css/estilos.css">
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet"

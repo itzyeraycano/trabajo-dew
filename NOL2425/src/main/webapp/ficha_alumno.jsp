@@ -7,7 +7,7 @@
 	  <title>Ficha del Alumno</title>
 	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"/>
 	  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
-	  <link href="./css/ficha_alumno.css" rel="stylesheet" type="text/css">
+	  <link href="./css/estilos.css" rel="stylesheet" type="text/css">
 	</head>
 	<body>
 	  <div class="container ficha-container">
