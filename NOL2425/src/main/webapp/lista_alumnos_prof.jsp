@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/estilos.css">
 </head>
-<body>
+<body class="profesor">
     <div class="banner-container text-center">
         <h1 class="titulo mb-0">
             <i class="bi bi-person-workspace me-2"></i>Portal del Profesor
