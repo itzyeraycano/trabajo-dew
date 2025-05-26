@@ -21,7 +21,7 @@
                 <div class="panel">
                     <h2 class="text-center">Iniciar Sesión</h2>
                     
-                    <form action="profesor" method="post" class="mt-4">
+                    <form action="<%= request.getContextPath() %>/profesor" method="post" class="mt-4">
                         <input type="hidden" name="action" value="login">
                         
                         <div class="mb-4">
