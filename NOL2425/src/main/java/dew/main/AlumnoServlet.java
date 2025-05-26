@@ -30,13 +30,20 @@ public class AlumnoServlet extends HttpServlet {
         
         HttpSession session = request.getSession();
 		
-		String action = request.getParameter("action");
-        
-        if(action != null && action.equals("cierra")) { //si se da la orden de cerrar sesión...
-			session.invalidate();
-			response.sendRedirect("/NOL2425/");
-			return;
-		}
+        String action = request.getParameter("action");
+
+        if (action != null && action.equals("cierra")) { // si se da la orden de cerrar sesión...
+            session.invalidate();
+
+            // Eliminar cookie JSESSIONID en el navegador
+            Cookie cookie = new Cookie("JSESSIONID", "");
+            cookie.setMaxAge(0); // expira inmediatamente
+            cookie.setPath(request.getContextPath().isEmpty() ? "/" : request.getContextPath()); // importante el path
+            response.addCookie(cookie);
+
+            response.sendRedirect("/NOL2425/");
+            return;
+        }
 
         // Recupera la ruta solicitada
         String ruta = request.getServletPath();
