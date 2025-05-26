@@ -1,9 +1,15 @@
 @charset "UTF-8";
 
 :root {
+	/* Student colors (default) */
 	--primary-color: #0d6efd;
 	--secondary-color: #20c997;
 	--gradient: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+	
+	/* Professor colors */
+	--professor-primary: #198754;
+	--professor-secondary: #20c997;
+	--professor-gradient: linear-gradient(135deg, var(--professor-primary), var(--professor-secondary));
 }
 
 /* Base styles */
@@ -23,6 +29,11 @@ body {
 	color: white;
 	padding: 1rem 0;
 	margin-bottom: 2rem;
+}
+
+/* Professor specific banner */
+.profesor .banner-container {
+	background: var(--professor-primary);
 }
 
 .banner-container .titulo {
@@ -46,6 +57,14 @@ h2, .titulo {
 	color: transparent;
 	font-weight: 600;
 	margin-bottom: 2rem;
+}
+
+/* Professor specific headers */
+.profesor h2, 
+.profesor .titulo {
+	background: var(--professor-gradient);
+	-webkit-background-clip: text;
+	background-clip: text;
 }
 
 h3 {
@@ -123,6 +142,11 @@ h3 {
 	font-weight: 500;
 }
 
+/* Professor specific badges */
+.profesor .badge-gradient {
+	background: var(--professor-gradient);
+}
+
 /* Datos fields */
 .datos-field {
 	margin-bottom: 1.5rem;
@@ -159,6 +183,11 @@ h3 {
 	color: white;
 }
 
+/* Professor specific tables */
+.profesor .table thead {
+	background: var(--professor-gradient);
+}
+
 .table th {
 	font-weight: 500;
 	border: none;
@@ -179,17 +208,27 @@ h3 {
 	border-radius: 25px;
 }
 
-.btn-outline-primary:hover,
-.btn-outline-secondary:hover {
-	transform: translateY(-1px);
+/* Professor specific buttons */
+.profesor .btn-outline-primary {
+	color: var(--professor-primary);
+	border-color: var(--professor-primary);
 }
 
-.btn-outline-primary:hover {
-	box-shadow: 0 2px 4px rgba(13, 110, 253, 0.2);
+.profesor .btn-outline-primary:hover {
+	background-color: var(--professor-primary);
+	border-color: var(--professor-primary);
+	color: white;
+	box-shadow: 0 2px 4px rgba(25, 135, 84, 0.2);
 }
 
-.btn-outline-secondary:hover {
-	box-shadow: 0 2px 4px rgba(108, 117, 125, 0.2);
+.profesor .btn-primary {
+	background-color: var(--professor-primary);
+	border-color: var(--professor-primary);
+}
+
+.profesor .btn-primary:hover {
+	background-color: #157347;
+	border-color: #146c43;
 }
 
 .btn-sm {
@@ -215,15 +254,18 @@ img.rounded:hover {
 	transition: all 0.2s;
 }
 
-.nav-tabs .nav-link:hover {
-	background-color: rgba(13, 110, 253, 0.05);
+/* Professor specific nav tabs */
+.profesor .nav-tabs .nav-link {
+	color: var(--professor-primary);
 }
 
-.nav-tabs .nav-link.active {
-	background: var(--gradient);
+.profesor .nav-tabs .nav-link:hover {
+	background-color: rgba(25, 135, 84, 0.05);
+}
+
+.profesor .nav-tabs .nav-link.active {
+	background: var(--professor-gradient);
 	color: white;
-	border: none;
-	border-radius: 8px;
 }
 
 header {

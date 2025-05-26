@@ -23,7 +23,7 @@
 
     <div class="panel">
       <!-- Nombre de la asignatura -->
-      <div class="d-flex justify-content-between align-items-center mb-4">
+          <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">${asignatura.nombre}</h2>
         <span class="badge badge-gradient">${asignatura.acronimo}</span>
       </div>
@@ -33,11 +33,11 @@
         <h3 class="mb-4">
           <i class="bi bi-person-workspace me-2 text-primary"></i>
           Profesor
-        </h3>
+            </h3>
         <div class="datos-field">
           <div class="datos-value">Nombre del Profesor</div>
         </div>
-      </div>
+          </div>
 
       <!-- Detalles de la Asignatura -->
       <div class="info-block">
@@ -51,7 +51,7 @@
               <label class="detail-label">Curso</label>
               <div class="detail-value">${asignatura.curso}</div>
             </div>
-          </div>
+                </div>
           <div class="col-md-4">
             <div class="detail-card">
               <label class="detail-label">Cuatrimestre</label>

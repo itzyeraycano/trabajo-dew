@@ -23,27 +23,27 @@
 										<span class="input-group-text"><i class="bi bi-person"></i></span>
 										<input type="text" id="usuarioAlumno" name="j_username" class="form-control" required>
 									</div>
-								</div>
+			    </div>
 								<div class="mb-4">
 									<label for="contrasenaAlumno" class="form-label">Contraseña</label>
 									<div class="input-group">
 										<span class="input-group-text"><i class="bi bi-lock"></i></span>
 										<input type="password" id="contrasenaAlumno" name="j_password" class="form-control" required>
-									</div>
-								</div>
+			    </div>
+			  </div>
 								<div class="d-grid">
 									<button type="submit" class="btn btn-primary btn-lg">Iniciar sesión</button>
-								</div>
+			    </div>
 							</form>
-						</div>
-					</div>
+			    </div>
+			  </div>
 					<div class="text-center mt-3">
 						<a href="<%= request.getContextPath() %>/" class="text-decoration-none">
 							<i class="bi bi-arrow-left"></i> Volver al inicio
 						</a>
 					</div>
-				</div>
-			</div>
+			    </div>
+			  </div>
 		</div>
 		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
