@@ -142,19 +142,20 @@ public class ClienteCentro {
      * @return true si el servidor responde con código 2xx
      * @throws IOException si hay fallo HTTP o red
      */
-    /*public boolean enviarPut(String recurso, String jsonBody, String apiKey, String cookie) throws IOException {
-        String url = String.format("%s%s?key=%s", BASE_URL, recurso, apiKey);
-        HttpPut put = new HttpPut(url);
-        put.setEntity(new StringEntity(jsonBody, StandardCharsets.UTF_8));
-        put.setHeader("Content-Type", "application/json");
-        put.setHeader("Cookie", cookie);
+	  public boolean enviarPut(String recurso, String jsonBody, String apiKey, String cookie) throws IOException {
+		    String url = String.format("%s%s?key=%s", BASE_URL, recurso, apiKey);
+		    HttpPut putRequest = new HttpPut(url);
+		    putRequest.setEntity(new StringEntity(jsonBody, StandardCharsets.UTF_8));
+		    putRequest.setHeader("Content-Type", "application/json");
+		    putRequest.setHeader("Cookie", cookie);
 
-        try (CloseableHttpResponse response = CLIENTE_HTTP.execute(put)) {
-            int code = response.getCode();
-            if (code < 200 || code >= 300) {
-                throw new IOException("PUT " + recurso + " falló: HTTP " + code);
-            }
-            return true;
-        }
-    }*/
+		    try (CloseableHttpResponse response = HTTP.execute(putRequest)) {
+		        int statusCode = response.getCode();
+		        if (statusCode < 200 || statusCode >= 300) {
+		            throw new IOException("PUT " + recurso + " falló: HTTP " + statusCode);
+		        }
+		        return true;
+		    }
+		}
+
 }

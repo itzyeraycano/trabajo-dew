@@ -25,6 +25,7 @@
     <url-pattern>/*</url-pattern>
   </filter-mapping>
 
+
   <!-- Filtro AuthFiltro -->
   <filter>
     <filter-name>AuthFiltro</filter-name>
@@ -57,6 +58,16 @@
   <url-pattern>/asignaturas</url-pattern>
 </servlet-mapping>
   
+ <!-- ProfesorServlet -->
+<servlet>
+    <servlet-name>ProfesorServlet</servlet-name>
+    <servlet-class>dew.main.ProfesorServlet</servlet-class>
+</servlet>
+<servlet-mapping>
+    <servlet-name>ProfesorServlet</servlet-name>
+    <url-pattern>/profesor</url-pattern>
+    <url-pattern>/profesores</url-pattern>
+</servlet-mapping>
   
 <!-- Zona protegida -->
 <security-constraint>
@@ -71,6 +82,21 @@
   </auth-constraint>
 </security-constraint>
 
+
+<!-- Zona protegida profesores -->
+<security-constraint>
+  <web-resource-collection>
+    <web-resource-name>Zona protegida</web-resource-name>
+    <url-pattern>/profesor</url-pattern>
+    <url-pattern>/profesores</url-pattern>
+    <url-pattern>*.jsp</url-pattern> 
+  </web-resource-collection>
+  <auth-constraint>
+    <role-name>rolpro</role-name>
+  </auth-constraint>
+</security-constraint>
+
+
 <!-- Página pública -->
 <security-constraint>
   <web-resource-collection>
@@ -81,21 +107,24 @@
 
 
   <!-- Configuración de login con formulario -->
-  <login-config>
+ <login-config>
     <auth-method>FORM</auth-method>
-    <realm-name>Zona alumnos</realm-name>
+    <realm-name>Zona autenticacion</realm-name>
     <form-login-config>
       <form-login-page>/login.jsp</form-login-page>
       <form-error-page>/login-error.jsp</form-error-page>
     </form-login-config>
-  </login-config>
+  </login-config> 
 
 
   <!-- Roles -->
-  <security-role>
-    <role-name>rolalu</role-name>
-  </security-role>
+<security-role>
+  <role-name>rolalu</role-name>
+</security-role>  
 
+<security-role>
+  <role-name>rolpro</role-name>
+</security-role>
 
   <!-- Welcome -->
   <welcome-file-list>
