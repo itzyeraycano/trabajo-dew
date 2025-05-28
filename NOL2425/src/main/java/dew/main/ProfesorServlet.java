@@ -1,6 +1,5 @@
 package dew.main;
 
-import dew.clases.Alumno;
 import dew.clases.Asignatura;
 import dew.clases.Profesor;
 import dew.servicios.ServicioProfesor;
@@ -14,103 +13,86 @@ public class ProfesorServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        if (session == null ||
-            session.getAttribute("apiKey") == null ||
-            session.getAttribute("sessionCookie") == null) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No autenticado");
+        if (!esAutenticado(request, response)) {
             return;
         }
 
+        HttpSession session = request.getSession();
+
         String action = request.getParameter("action");
+
         if ("cierra".equals(action)) {
             session.invalidate();
+
+            // Eliminar cookie JSESSIONID en el navegador para cerrar sesión correctamente
+            Cookie cookie = new Cookie("JSESSIONID", "");
+            cookie.setMaxAge(0);
+            cookie.setPath(request.getContextPath().isEmpty() ? "/" : request.getContextPath());
+            response.addCookie(cookie);
+
             response.sendRedirect("/NOL2425/");
             return;
         }
 
-        String path = request.getServletPath();
+        String ruta = request.getServletPath();
 
-        switch (path) {
+        switch (ruta) {
             case "/profesor":
                 mostrarPerfil(request, response);
                 break;
-            case "/profesor/asignaturas":
-                listarAsignaturas(request, response);
-                break;
-            case "/profesor/alumnos":
-                listarAlumnosAsignatura(request, response);
-                break;
-            case "/profesor/nota":
-                obtenerNota(request, response);
-                break;
-            case "/profesor/nota/modificar":
-                // No implementado aún porque ClienteCentro no tiene PUT
-                response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, "Modificación de nota no implementada");
-                break;
-            case "/profesor/nota/media":
-                obtenerNotaMedia(request, response);
+            case "/profesores":
+                mostrarLista(request, response);
                 break;
             default:
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
     }
 
-    private void mostrarPerfil(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String dniProfesor = (String) request.getSession().getAttribute("dni");
-        Profesor profesor = ServicioProfesor.obtenerProfesorPorDni(getServletContext(), request.getSession(), dniProfesor);
-        request.setAttribute("profesor", profesor);
-        request.getRequestDispatcher("ficha_profesor.jsp").forward(request, response);
-    }
-
-    private void listarAsignaturas(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String dniProfesor = (String) request.getSession().getAttribute("dni");
-        List<Asignatura> asignaturas = ServicioProfesor.obtenerAsignaturasDeProfesor(getServletContext(), request.getSession(), dniProfesor);
-        response.setContentType("application/json");
-        response.getWriter().write(new com.google.gson.Gson().toJson(asignaturas));
-    }
-
-    private void listarAlumnosAsignatura(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String acronimo = request.getParameter("acronimo");
-        if (acronimo == null || acronimo.isBlank()) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Falta parámetro acronimo");
-            return;
+    private boolean esAutenticado(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null ||
+            session.getAttribute("apiKey") == null ||
+            session.getAttribute("sessionCookie") == null) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED,
+                    "No autenticado con CentroEducativo");
+            return false;
         }
-        // Aquí no tienes método en ServicioProfesor para obtener alumnos por asignatura.
-        // Puedes lanzar error o implementar si amplías ClienteCentro.
-        response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, "Listado de alumnos por asignatura no implementado");
+        return true;
     }
 
-    private void obtenerNota(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // No tienes método para obtener nota individual en ServicioProfesor con ClienteCentro actual
-        response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, "Obtención de nota no implementada");
-    }
-
-    private void obtenerNotaMedia(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        // No tienes método para calcular nota media en ServicioProfesor con ClienteCentro actual
-        response.sendError(HttpServletResponse.SC_NOT_IMPLEMENTED, "Cálculo de nota media no implementado");
-    }
-    
-    private void modificarNota(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String acronimo = request.getParameter("acronimo");
-        String dniAlumno = request.getParameter("dni");
-        String nuevaNota = request.getParameter("nota");
-
-        if (acronimo == null || dniAlumno == null || nuevaNota == null) {
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Faltan parámetros");
+    private void mostrarPerfil(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            request.setAttribute("error", "Sesión no válida.");
+            request.getRequestDispatcher("login-error.jsp").forward(request, response);
             return;
         }
 
-        boolean exito;
         try {
-            exito = ServicioProfesor.modificarNotaAlumno(getServletContext(), request.getSession(), dniAlumno, acronimo, nuevaNota);
-        } catch (IOException e) {
-            exito = false;
-            // Opcional: log error
-            e.printStackTrace();
-        }
+            String dniProfesor = (String) session.getAttribute("dni");
+            Profesor profesor = ServicioProfesor.obtenerProfesorPorDni(getServletContext(), session, dniProfesor);
+            if (profesor == null) {
+                request.setAttribute("error", "No se pudo cargar la ficha del profesor.");
+                request.getRequestDispatcher("login-error.jsp").forward(request, response);
+                return;
+            }
 
-        response.setContentType("application/json");
-        response.getWriter().write(new com.google.gson.Gson().toJson(exito));
+            request.setAttribute("profesor", profesor);
+            request.getRequestDispatcher("ficha_profesor.jsp").forward(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+            request.setAttribute("error", "Error interno al cargar el profesor.");
+            request.getRequestDispatcher("login-error.jsp").forward(request, response);
+        }
+    }
+
+    private void mostrarLista(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        HttpSession session = request.getSession();
+        List<Profesor> profesores = ServicioProfesor.obtenerProfesores(getServletContext(), session);
+        request.setAttribute("profesores", profesores);
+        request.getRequestDispatcher("lista_profesores.jsp").forward(request, response);
     }
 }
