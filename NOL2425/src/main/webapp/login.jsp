@@ -3,7 +3,7 @@
 <html lang="es">
 	<head>
 	 	<meta charset="UTF-8">
-	 	<title>Registro / Login Alumno</title>
+	 	<title>Registro / Login</title>
 	 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 		<link href="<%= request.getContextPath() %>/css/estilos.css" rel="stylesheet" type="text/css">
 	</head>
@@ -13,7 +13,7 @@
 				<div class="col-md-6">
 					<div class="card shadow">
 						<div class="card-header bg-primary text-white text-center py-3">
-							<h2 class="h4 mb-0">Iniciar Sesión - Alumno</h2>
+							<h2 class="h4 mb-0">Iniciar Sesión</h2>
 						</div>
 						<div class="card-body p-4">
 							<form action="j_security_check" method="post">
