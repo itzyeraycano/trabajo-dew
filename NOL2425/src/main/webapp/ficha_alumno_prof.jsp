@@ -1,5 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="dew.clases.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,53 +17,48 @@
 
     <div class="container">
         <div class="panel">
-            <%
-            Alumno alumno = (Alumno) request.getAttribute("alumno");
-            Asignatura asignatura = (Asignatura) request.getAttribute("asignatura");
-            if (alumno != null && asignatura != null) {
-            %>
             <div class="row">
                 <div class="col-md-4">
                     <div class="text-center mb-4">
                         <img src="img/student-avatar.png" alt="Foto del alumno" class="student-photo mb-3">
-                        <h3 class="student-header"><%= alumno.getNombre() + " " + alumno.getApellidos() %></h3>
-                        <span class="badge-gradient"><%= alumno.getDni() %></span>
+                        <h3 class="student-header">Juan Pérez García</h3>
+                        <span class="badge-gradient">12345678A</span>
                     </div>
 
                     <div class="info-block">
                         <h3 class="mb-4">Información Personal</h3>
                         <div class="datos-field">
                             <label>Email</label>
-                            <div class="datos-value"><%= alumno.getEmail() %></div>
+                            <div class="datos-value">juan.perez@example.com</div>
                         </div>
                         <div class="datos-field">
                             <label>Teléfono</label>
-                            <div class="datos-value"><%= alumno.getTelefono() %></div>
+                            <div class="datos-value">666123456</div>
                         </div>
                         <div class="datos-field">
                             <label>Dirección</label>
-                            <div class="datos-value"><%= alumno.getDireccion() %></div>
+                            <div class="datos-value">Calle Mayor 123, Valencia</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="col-md-8">
                     <div class="d-flex justify-content-between align-items-center mb-4">
-                        <h2 class="mb-0"><%= asignatura.getNombre() %></h2>
-                        <span class="badge-gradient"><%= asignatura.getCodigo() %></span>
+                        <h2 class="mb-0">Desarrollo Web</h2>
+                        <span class="badge-gradient">11545</span>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="detail-card">
                                 <span class="detail-label">Curso</span>
-                                <div class="detail-value"><%= asignatura.getCurso() %>º</div>
+                                <div class="detail-value">2º</div>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="detail-card">
                                 <span class="detail-label">Cuatrimestre</span>
-                                <div class="detail-value"><%= asignatura.getCuatrimestre() %>º</div>
+                                <div class="detail-value">B</div>
                             </div>
                         </div>
                     </div>
@@ -102,13 +96,12 @@
                     </div>
                 </div>
             </div>
-            <% } %>
 
             <div class="text-center mt-4">
-                <a href="profesor?action=verAlumnos&asignatura=<%= asignatura.getCodigo() %>" class="btn btn-outline-primary me-2">
+                <a href="#" class="btn btn-outline-primary me-2">
                     <i class="bi bi-arrow-left me-1"></i>Volver a Lista de Alumnos
                 </a>
-                <a href="profesor?action=listarAsignaturas" class="btn btn-outline-primary me-2">
+                <a href="#" class="btn btn-outline-primary me-2">
                     <i class="bi bi-book me-1"></i>Mis Asignaturas
                 </a>
                 <a href="login.jsp" class="btn btn-outline-secondary">

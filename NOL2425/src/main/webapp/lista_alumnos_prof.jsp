@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="dew.clases.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -20,13 +18,8 @@
     <div class="container">
         <div class="panel">
             <div class="d-flex justify-content-between align-items-center mb-4">
-                <h2 class="mb-0">
-                    <% Asignatura asignatura = (Asignatura) request.getAttribute("asignatura"); %>
-                    <%= asignatura != null ? asignatura.getNombre() : "Asignatura" %>
-                </h2>
-                <span class="badge-gradient">
-                    <%= asignatura != null ? asignatura.getCodigo() : "" %>
-                </span>
+                <h2 class="mb-0">Desarrollo Web</h2>
+                <span class="badge-gradient">11545</span>
             </div>
 
             <div class="table-responsive">
@@ -41,33 +34,34 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% 
-                        List<Alumno> alumnos = (List<Alumno>) request.getAttribute("alumnos");
-                        if (alumnos != null) {
-                            for (Alumno alumno : alumnos) {
-                        %>
                         <tr>
-                            <td><%= alumno.getDni() %></td>
-                            <td><%= alumno.getNombre() %></td>
-                            <td><%= alumno.getApellidos() %></td>
-                            <td><%= alumno.getEmail() %></td>
+                            <td>12345678A</td>
+                            <td>Juan</td>
+                            <td>Pérez García</td>
+                            <td>juan.perez@example.com</td>
                             <td>
-                                <a href="profesor?action=verFichaAlumno&asignatura=<%= asignatura.getCodigo() %>&alumno=<%= alumno.getDni() %>" 
-                                   class="btn btn-outline-primary btn-sm">
+                                <a href="#" class="btn btn-outline-primary btn-sm">
                                     <i class="bi bi-person-vcard-fill me-1"></i>Ver Ficha
                                 </a>
                             </td>
                         </tr>
-                        <% 
-                            }
-                        }
-                        %>
+                        <tr>
+                            <td>87654321B</td>
+                            <td>María</td>
+                            <td>López Martínez</td>
+                            <td>maria.lopez@example.com</td>
+                            <td>
+                                <a href="#" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-person-vcard-fill me-1"></i>Ver Ficha
+                                </a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
 
             <div class="text-center mt-4">
-                <a href="profesor?action=listarAsignaturas" class="btn btn-outline-primary me-2">
+                <a href="#" class="btn btn-outline-primary me-2">
                     <i class="bi bi-arrow-left me-1"></i>Volver a Asignaturas
                 </a>
                 <a href="login.jsp" class="btn btn-outline-secondary">

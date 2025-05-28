@@ -1,6 +1,4 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.util.List" %>
-<%@ page import="dew.clases.*" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -34,28 +32,30 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <% 
-                        List<Asignatura> asignaturas = (List<Asignatura>) request.getAttribute("asignaturas");
-                        if (asignaturas != null) {
-                            for (Asignatura asig : asignaturas) {
-                        %>
                         <tr>
-                            <td><%= asig.getCodigo() %></td>
-                            <td><%= asig.getNombre() %></td>
-                            <td><%= asig.getAcronimo() %></td>
-                            <td><%= asig.getCurso() %></td>
-                            <td><%= asig.getCuatrimestre() %></td>
+                            <td>11545</td>
+                            <td>Desarrollo Web</td>
+                            <td>DEW</td>
+                            <td>2</td>
+                            <td>B</td>
                             <td>
-                                <a href="profesor?action=verAlumnos&asignatura=<%= asig.getCodigo() %>" 
-                                   class="btn btn-outline-primary btn-sm">
+                                <a href="#" class="btn btn-outline-primary btn-sm">
                                     <i class="bi bi-people-fill me-1"></i>Ver Alumnos
                                 </a>
                             </td>
                         </tr>
-                        <% 
-                            }
-                        }
-                        %>
+                        <tr>
+                            <td>11544</td>
+                            <td>Tecnología de Sistemas de Información en la Red</td>
+                            <td>TSR</td>
+                            <td>2</td>
+                            <td>B</td>
+                            <td>
+                                <a href="#" class="btn btn-outline-primary btn-sm">
+                                    <i class="bi bi-people-fill me-1"></i>Ver Alumnos
+                                </a>
+                            </td>
+                        </tr>
                     </tbody>
                 </table>
             </div>
