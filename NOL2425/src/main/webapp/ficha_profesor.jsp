@@ -11,6 +11,7 @@
     <style>
         body { background-color: #f8f9fa; }
         .card-header { background-color: #007bff; color: white; }
+        .list-group-item-action:hover { background-color: #e9ecef; }
     </style>
 </head>
 <body>
@@ -55,9 +56,9 @@
                 <h5 class="mb-0">Datos Personales</h5>
             </div>
             <div class="card-body">
-                <p><strong>DNI:</strong> <%= profesor.getDni() %></p>
-                <p><strong>Nombre:</strong> <%= profesor.getNombre() %></p>
-                <p><strong>Apellidos:</strong> <%= profesor.getApellidos() %></p>
+                <p><strong>DNI:</strong> <%= profesor.getDni() != null ? profesor.getDni() : "N/A" %></p>
+                <p><strong>Nombre:</strong> <%= profesor.getNombre() != null ? profesor.getNombre() : "N/A" %></p>
+                <p><strong>Apellidos:</strong> <%= profesor.getApellidos() != null ? profesor.getApellidos() : "N/A" %></p>
             </div>
         </div>
 
@@ -69,7 +70,7 @@
                 <% if (asignaturas != null && !asignaturas.isEmpty()) { %>
                     <ul class="list-group">
                         <% for (Asignatura asignatura : asignaturas) { %>
-                            <li class="list-group-item">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
                                 <div>
                                     <strong><%= asignatura.getAcronimo() != null ? asignatura.getAcronimo() : "N/A" %></strong> 
                                     - <%= asignatura.getNombre() != null ? asignatura.getNombre() : "Nombre no disponible" %>
@@ -79,6 +80,10 @@
                                         Cuatrimestre: <%= asignatura.getCuatrimestre() != null ? asignatura.getCuatrimestre() : "N/A" %>
                                     </small>
                                 </div>
+                                <a href="${pageContext.request.contextPath}/profesor?action=verAlumnosDeAsignatura&acronimo=<%= asignatura.getAcronimo() %>" 
+                                   class="btn btn-sm btn-outline-primary">
+                                   Ver Alumnos <i class="bi bi-chevron-right"></i>
+                                </a>
                             </li>
                         <% } %>
                     </ul>
