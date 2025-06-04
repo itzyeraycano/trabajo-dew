@@ -91,8 +91,8 @@ public class ProfesorServlet extends HttpServlet {
     private void mostrarLista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        List<Profesor> profesores = ServicioProfesor.obtenerProfesores(getServletContext(), session);
-        request.setAttribute("profesores", profesores);
-        request.getRequestDispatcher("lista_profesores.jsp").forward(request, response);
+        //List<Profesor> profesores = ServicioProfesor.obtenerProfesores(getServletContext(), session);
+        //request.setAttribute("profesores", profesores);
+        //request.getRequestDispatcher("lista_profesores.jsp").forward(request, response);
     }
 }
