@@ -122,12 +122,12 @@ public class AlumnoServlet extends HttpServlet {
     private void mostrarLista(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        Alumno alumno = ServicioAlumno.obtenerAlumno(getServletContext(), session);
+        //Alumno alumno = ServicioAlumno.obtenerAlumno(getServletContext(), session);
 
         // Pasa la lista de alumnos como atributo para la vista
-        request.setAttribute("alumnos", alumno);
+        //request.setAttribute("alumnos", alumno);
 
         // Redirige a la página lista_alumnos.html para mostrar todos los alumnos
-        request.getRequestDispatcher("lista_alumnos.jsp").forward(request, response);
+        //request.getRequestDispatcher("lista_alumnos.jsp").forward(request, response);
     }
 }
