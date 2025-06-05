@@ -131,8 +131,7 @@ public class ServicioProfesor {
             String dniAlumno, String acronimoAsignatura, String nuevaNota) throws IOException {
         CredencialesSesion cred = obtenerCredenciales(session);
         String recurso = String.format("alumnos/%s/asignaturas/%s", dniAlumno, acronimoAsignatura);
-        String jsonBody = String.format("{\"nota\":\"%s\"}", nuevaNota);
-        return ClienteCentro.obtenerInstancia().enviarPut(recurso, jsonBody, cred.apiKey, cred.cookie);
+        return ClienteCentro.obtenerInstancia().enviarPut(recurso, nuevaNota, cred.apiKey, cred.cookie);
     }
 
     /**

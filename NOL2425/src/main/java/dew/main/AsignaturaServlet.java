@@ -1,13 +1,17 @@
 package dew.main;
 
 import dew.clases.Asignatura;
+import dew.clases.Alumno;
+
 import dew.servicios.ServicioAsignatura;
+import dew.servicios.ServicioProfesor;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Servlet encargado de mostrar los detalles de una asignatura concreta.
@@ -42,9 +46,17 @@ public class AsignaturaServlet extends HttpServlet {
         // Obtener los detalles de la asignatura utilizando el servicio
         Asignatura asignaturaDetallada = ServicioAsignatura.obtenerDetallesAsignatura(
                 getServletContext(), sesion, acronimo);
+        
+        // Obtener lista de alumnos matriculados
+        List<Alumno> alumnosMatriculados = ServicioProfesor.obtenerAlumnosPorAsignatura(
+            getServletContext(), sesion, acronimo);
+
+        // Convertir la lista de alumnos a JSON
+        String alumnosJson = new com.google.gson.Gson().toJson(alumnosMatriculados);
 
         // Enviar los datos al JSP para su visualización
         request.setAttribute("asignatura", asignaturaDetallada);
+        request.setAttribute("alumnosJson", alumnosJson);
         request.getRequestDispatcher("/info_asignatura.jsp").forward(request, response);
     }
 

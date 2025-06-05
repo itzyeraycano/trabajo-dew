@@ -10,9 +10,8 @@
   <link rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
 </head>
-<body>
+<body data-context-path="${pageContext.request.contextPath}" data-asignatura="${asignatura.acronimo}">
   <div class="container py-4">
-    <!-- Header con estilo del index -->
     <header class="text-center mb-5 rounded shadow-sm">
       <div class="bg-primary text-white py-4 rounded">
         <h1 class="display-5">
@@ -22,24 +21,21 @@
     </header>
 
     <div class="panel">
-      <!-- Nombre de la asignatura -->
-          <div class="d-flex justify-content-between align-items-center mb-4">
+      <div class="d-flex justify-content-between align-items-center mb-4">
         <h2 class="mb-0">${asignatura.nombre}</h2>
-        <span class="badge badge-gradient">${asignatura.acronimo}</span>
+        <span class="badge bg-secondary">${asignatura.acronimo}</span>
       </div>
 
-      <!-- Profesor -->
       <div class="info-block">
         <h3 class="mb-4">
           <i class="bi bi-person-workspace me-2 text-primary"></i>
           Profesor
-            </h3>
+        </h3>
         <div class="datos-field">
           <div class="datos-value">Nombre del Profesor</div>
         </div>
-          </div>
+      </div>
 
-      <!-- Detalles de la Asignatura -->
       <div class="info-block">
         <h3 class="mb-4">
           <i class="bi bi-info-circle me-2 text-success"></i>
@@ -51,7 +47,7 @@
               <label class="detail-label">Curso</label>
               <div class="detail-value">${asignatura.curso}</div>
             </div>
-                </div>
+          </div>
           <div class="col-md-4">
             <div class="detail-card">
               <label class="detail-label">Cuatrimestre</label>
@@ -67,7 +63,28 @@
         </div>
       </div>
 
-      <!-- Botones de navegación -->
+      <div class="info-block mt-5">
+        <h3 class="mb-4">
+          <i class="bi bi-people-fill me-2 text-info"></i>
+          Alumnos matriculados
+        </h3>
+
+        <table id="tablaAlumnos" class="table table-striped">
+          <thead>
+			  <tr>
+			    <th>Foto</th>
+			    <th>Nombre</th>
+			    <th>Apellidos</th>
+			    <th>DNI</th>
+			    <th>Nota</th>
+			  </tr>
+		  </thead>
+          <tbody id="tbodyAlumnos">
+            <!-- Se rellena con JavaScript -->
+          </tbody>
+        </table>
+      </div>
+
       <div class="d-flex justify-content-between mt-4">
         <button class="btn btn-outline-primary" onclick="history.back()">
           <i class="bi bi-arrow-left me-2"></i>Volver
@@ -80,5 +97,13 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Inyectar JSON en un bloque script de tipo application/json -->
+  <script id="alumnos-data" type="application/json">
+    ${alumnosJson}
+  </script>
+
+  <!-- Script externo -->
+  <script src="${pageContext.request.contextPath}/js/alumnos_asignatura.js"></script>
 </body>
 </html>
