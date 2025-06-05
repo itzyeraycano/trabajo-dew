@@ -25,9 +25,9 @@
                 </div>
                 
                 <div class="d-grid gap-2">
-                    <a href="/NOL2425/alumno" class="btn btn-primary btn-lg">
-                        <i class="bi bi-arrow-return-left me-2"></i>Volver al login
-                    </a>
+                    <button class="btn btn-primary btn-lg" onclick="history.back()">
+			        	<i class="bi bi-arrow-return-left me-2"></i>Volver al login
+					</button>
                     <a href="<%= request.getContextPath() %>/" class="btn btn-outline-secondary">
                         <i class="bi bi-house-door me-2"></i>Ir al inicio
                     </a>
