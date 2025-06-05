@@ -32,18 +32,24 @@ public class AlumnoServlet extends HttpServlet {
 		
         String action = request.getParameter("action");
 
-        if (action != null && action.equals("cierra")) { // si se da la orden de cerrar sesión...
-            session.invalidate();
+        if (action != null) {
+            switch (action) {
+                case "cierra":
+                    session.invalidate();
+                    Cookie cookie = new Cookie("JSESSIONID", "");
+                    cookie.setMaxAge(0);
+                    cookie.setPath(request.getContextPath().isEmpty() ? "/" : request.getContextPath());
+                    response.addCookie(cookie);
+                    response.sendRedirect(request.getContextPath() + "/");
+                    return;
 
-            // Eliminar cookie JSESSIONID en el navegador
-            Cookie cookie = new Cookie("JSESSIONID", "");
-            cookie.setMaxAge(0); // expira inmediatamente
-            cookie.setPath(request.getContextPath().isEmpty() ? "/" : request.getContextPath()); // importante el path
-            response.addCookie(cookie);
+                case "verCertificado":
+                    mostrarCertificado(request, response, session);
+                    return;
 
-            response.sendRedirect("/NOL2425/");
-            return;
+            }
         }
+
 
         // Recupera la ruta solicitada
         String ruta = request.getServletPath();
@@ -130,4 +136,37 @@ public class AlumnoServlet extends HttpServlet {
         // Redirige a la página lista_alumnos.html para mostrar todos los alumnos
         //request.getRequestDispatcher("lista_alumnos.jsp").forward(request, response);
     }
+    
+    /**
+    * Muestra el certificado asociado al alumno.
+    */
+   private void mostrarCertificado(HttpServletRequest request, HttpServletResponse response, HttpSession session)
+        throws ServletException, IOException {
+    System.out.println(">> Entrando en mostrarCertificado()");
+
+
+    try {
+        // Obtenemos el alumno
+        Alumno alumno = ServicioAlumno.obtenerAlumno(getServletContext(), session);
+
+        if (alumno == null) {
+            System.out.println(">> Alumno es null en mostrarCertificado");
+            request.setAttribute("error", "No se pudo cargar la información del alumno para el certificado.");
+            request.getRequestDispatcher("login-error.jsp").forward(request, response);
+            return;
+        }
+
+        System.out.println(">> Alumno obtenido para certificado: " + alumno.getDni());
+        request.setAttribute("alumno", alumno);
+
+        request.getRequestDispatcher("/certificado.jsp").forward(request, response);
+
+    } catch (Exception e) {
+        System.out.println(">> ERROR en mostrarCertificado: " + e.getMessage());
+        e.printStackTrace();
+        request.setAttribute("error", "Error interno al generar el certificado.");
+        request.getRequestDispatcher("login-error.jsp").forward(request, response);
+    }
+   }
 }
+

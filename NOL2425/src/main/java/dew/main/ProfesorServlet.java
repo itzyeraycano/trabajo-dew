@@ -8,8 +8,6 @@ import dew.servicios.ServicioAsignatura; // Para obtener detalles de la asignatu
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.List;
 import org.apache.hc.core5.http.ParseException; 
@@ -60,55 +58,6 @@ public class ProfesorServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Ruta no reconocida: " + servletPath);
         }
     }
-    
-    @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String path = req.getServletPath();
-
-        // Solo atender PUT a /profesor
-        if ("/profesor".equals(path)) {
-            if (!esAutenticado(req, resp)) {
-                return;
-            }
-
-            // Leer JSON del cuerpo
-            StringBuilder sb = new StringBuilder();
-            String line;
-            try (BufferedReader reader = req.getReader()) {
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line);
-                }
-            }
-
-            try {
-                com.google.gson.JsonObject json = com.google.gson.JsonParser.parseString(sb.toString()).getAsJsonObject();
-                String dniAlumno = json.get("dniAlumno").getAsString();
-                String acronimo = json.get("acronimo").getAsString();
-                String nota = json.get("nota").getAsString();
-
-                boolean resultado = ServicioProfesor.modificarNotaAlumno(
-                        getServletContext(), req.getSession(), dniAlumno, acronimo, nota
-                );
-
-                resp.setContentType("application/json");
-                if (resultado) {
-                    resp.getWriter().write("{\"estado\":\"ok\"}");
-                } else {
-                    resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-                    resp.getWriter().write("{\"estado\":\"error\"}");
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                resp.setContentType("application/json");
-                resp.getWriter().write("{\"estado\":\"error\",\"mensaje\":\"Petición inválida\"}");
-            }
-        } else {
-            
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-        }
-    }
-
 
     private boolean esAutenticadoConCentroEducativo(HttpServletRequest request, HttpServletResponse response)
             throws IOException {

@@ -116,7 +116,13 @@
                 </tbody>
               </table>
             </div>
-        </div>
+        </div>        
+        <div class="text-end my-3">
+		  	<a href="${pageContext.request.contextPath}/alumno?action=verCertificado"
+			   class="btn btn-outline-success">
+			  <i class="bi bi-file-earmark-text me-1"></i> Ver Certificado Académico
+			</a>
+		</div>        
       </div>
   </div>
 

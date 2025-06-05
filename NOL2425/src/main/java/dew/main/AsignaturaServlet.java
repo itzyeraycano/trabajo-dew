@@ -47,16 +47,17 @@ public class AsignaturaServlet extends HttpServlet {
         Asignatura asignaturaDetallada = ServicioAsignatura.obtenerDetallesAsignatura(
                 getServletContext(), sesion, acronimo);
         
-        // Obtener lista de alumnos matriculados
-        List<Alumno> alumnosMatriculados = ServicioProfesor.obtenerAlumnosPorAsignatura(
-            getServletContext(), sesion, acronimo);
-
-        // Convertir la lista de alumnos a JSON
-        String alumnosJson = new com.google.gson.Gson().toJson(alumnosMatriculados);
-
+        // ** Obtener lista de alumnos matriculados
+        /*  List<Alumno> alumnosMatriculados = ServicioProfesor.obtenerAlumnosPorAsignatura(
+        /*    getServletContext(), sesion, acronimo);
+		/*
+        /* Convertir la lista de alumnos a JSON
+        /*String alumnosJson = new com.google.gson.Gson().toJson(alumnosMatriculados);
+		*/
+        
         // Enviar los datos al JSP para su visualización
         request.setAttribute("asignatura", asignaturaDetallada);
-        request.setAttribute("alumnosJson", alumnosJson);
+        //request.setAttribute("alumnosJson", alumnosJson);
         request.getRequestDispatcher("/info_asignatura.jsp").forward(request, response);
     }
 
