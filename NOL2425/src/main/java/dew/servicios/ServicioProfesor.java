@@ -1,32 +1,24 @@
 package dew.servicios;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-
-import dew.clases.Alumno;
+import com.google.gson.JsonSyntaxException;
+import dew.clases.Alumno; 
 import dew.clases.Asignatura;
 import dew.clases.Profesor;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
-
-import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-
+import java.util.Map; 
 import org.apache.hc.core5.http.ParseException;
 
 public class ServicioProfesor {
 
     private static final Gson gson = new Gson();
 
-    /**
-     * Clase interna para agrupar credenciales de sesión.
-     */
     private static class CredencialesSesion {
         final String apiKey;
         final String cookie;
@@ -37,218 +29,127 @@ public class ServicioProfesor {
         }
     }
 
-    /**
-     * Obtiene las credenciales (apiKey y cookie) de la sesión y valida que existan.
-     *
-     * @param session La sesión HTTP actual
-     * @return Un objeto CredencialesSesion con apiKey y cookie
-     * @throws IOException Si apiKey o cookie no están presentes en la sesión
-     */
     private static CredencialesSesion obtenerCredenciales(HttpSession session) throws IOException {
         String apiKey = (String) session.getAttribute("apiKey");
+        String dni = (String) session.getAttribute("dni");
         String cookie = (String) session.getAttribute("sessionCookie");
-        if (apiKey == null || cookie == null) {
-            throw new IOException("Sesión inválida: falta apiKey o sessionCookie");
+
+        if (apiKey == null || dni == null) {
+            throw new IOException("ServicioProfesor: Sesión inválida, faltan apiKey o dni del usuario.");
+        }
+        if (cookie == null) {
+            System.out.println("ServicioProfesor (obtenerCredenciales): sessionCookie de CentroEducativo es null para DNI " + dni + ". Se procederá solo con API Key.");
         }
         return new CredencialesSesion(apiKey, cookie);
     }
 
-    /**
-     * Realiza la autenticación del profesor mediante dni y contraseña.
-     *
-     * @param dni El DNI del profesor
-     * @param password La contraseña del profesor
-     * @return Un objeto AuthResult con apiKey y sessionCookie
-     * @throws IOException Si hay error en la comunicación o autenticación
-     */
-    public static dew.servicios.AuthResult loginProfesor(String dni, String password) throws IOException {
-        return ClienteCentro.obtenerInstancia().autenticarUsuario(dni, password);
-    }
-
-    /**
-     * Obtiene la lista completa de profesores.
-     *
-     * @param context Contexto del servlet (no usado directamente aquí)
-     * @param session Sesión HTTP con credenciales válidas
-     * @return Lista de objetos Profesor
-     * @throws IOException Si falla la obtención de datos o sesión inválida
-     */
-    public static List<Profesor> obtenerProfesores(ServletContext context, HttpSession session) throws IOException {
+    public static List<Profesor> obtenerProfesores(ServletContext context, HttpSession session) 
+            throws IOException, ParseException, JsonSyntaxException {
         CredencialesSesion cred = obtenerCredenciales(session);
         String json = ClienteCentro.obtenerInstancia().obtenerRecurso("profesores", cred.apiKey, cred.cookie);
+        System.out.println("ServicioProfesor (obtenerProfesores): JSON recibido: " + json);
+        if (json == null || json.trim().isEmpty() || json.trim().equalsIgnoreCase("null") || json.trim().equals("[]")) {
+            return Collections.emptyList();
+        }
         return gson.fromJson(json, new TypeToken<List<Profesor>>(){}.getType());
     }
 
-    /**
-     * Obtiene un profesor concreto por su DNI.
-     *
-     * @param context Contexto del servlet (no usado directamente aquí)
-     * @param session Sesión HTTP con credenciales válidas
-     * @param dni DNI del profesor a buscar
-     * @return Objeto Profesor correspondiente al DNI
-     * @throws IOException Si falla la obtención o sesión inválida
-     */
-    public static Profesor obtenerProfesorPorDni(ServletContext context, HttpSession session, String dni) throws IOException {
+    public static Profesor obtenerProfesorPorDni(ServletContext context, HttpSession session, String dniProfesor) 
+            throws IOException, ParseException, JsonSyntaxException {
         CredencialesSesion cred = obtenerCredenciales(session);
-        String json = ClienteCentro.obtenerInstancia().obtenerRecurso("profesores/" + dni, cred.apiKey, cred.cookie);
-        return gson.fromJson(json, Profesor.class);
-    }
 
-    /**
-     * Obtiene las asignaturas que imparte un profesor dado su DNI.
-     *
-     * @param context Contexto del servlet (no usado directamente aquí)
-     * @param session Sesión HTTP con credenciales válidas 
-     * @param dniProfesor DNI del profesor
-     * @return Lista de asignaturas impartidas por el profesor
-     * @throws IOException Si falla la obtención o sesión inválida
-     */
-    public static List<Asignatura> obtenerAsignaturasDeProfesor(ServletContext context, HttpSession session, String dniProfesor) throws IOException {
-        CredencialesSesion cred = obtenerCredenciales(session);
-        String json = ClienteCentro.obtenerInstancia().obtenerRecurso("profesores/" + dniProfesor + "/asignaturas", cred.apiKey, cred.cookie);
-        return gson.fromJson(json, new TypeToken<List<Asignatura>>(){}.getType());
-    }
-
-    /**
-     * Obtiene la lista de profesores que imparten una asignatura específica.
-     *
-     * @param context Contexto del servlet (no usado directamente aquí)
-     * @param session Sesión HTTP con credenciales válidas
-     * @param acronimoAsignatura Acrónimo de la asignatura
-     * @return Lista de profesores que imparten la asignatura
-     * @throws IOException Si falla la obtención o sesión inválida
-     */
-    public static List<Profesor> getProfesoresDeAsignatura(ServletContext context, HttpSession session, String acronimoAsignatura) throws IOException {
-        CredencialesSesion cred = obtenerCredenciales(session);
-        String json = ClienteCentro.obtenerInstancia().obtenerRecurso("asignaturas/" + acronimoAsignatura + "/profesores", cred.apiKey, cred.cookie);
-        return gson.fromJson(json, new TypeToken<List<Profesor>>(){}.getType());
-    }
-
-    /**
-     * Modifica la nota de un alumno en una asignatura específica.
-     *
-     * @param context Contexto del servlet (no usado directamente aquí)
-     * @param session Sesión HTTP con credenciales válidas
-     * @param dniAlumno DNI del alumno cuya nota se modificará
-     * @param acronimoAsignatura Acrónimo de la asignatura
-     * @param nuevaNota Nueva nota a asignar
-     * @return true si la modificación fue exitosa
-     * @throws IOException Si falla la petición o sesión inválida
-     */
-   
-
-    /**
-     * Obtiene la lista de alumnos matriculados en una asignatura impartida por el profesor.
-     *
-     * @param context Contexto del servlet (no usado directamente aquí)
-     * @param session Sesión HTTP con credenciales válidas
-     * @param acronimoAsignatura Acrónimo de la asignatura
-     * @return Lista de alumnos matriculados en la asignatura
-     * @throws IOException Si falla la obtención o sesión inválida
-     */
-    public static List<dew.clases.Alumno> obtenerAlumnosPorAsignatura(ServletContext context, HttpSession session, String acronimoAsignatura) throws IOException {
-        CredencialesSesion cred = obtenerCredenciales(session);
-        String json = ClienteCentro.obtenerInstancia().obtenerRecurso("asignaturas/" + acronimoAsignatura + "/alumnos", cred.apiKey, cred.cookie);
-        return gson.fromJson(json, new TypeToken<List<dew.clases.Alumno>>(){}.getType());
-    }
-    
-    /**
-     * Calcula la nota media de una asignatura que imparte un profesor.
-     * 
-     * @param context contexto ServletContext
-     * @param session sesión HttpSession con apiKey y cookie
-     * @param acronimo acrónimo de la asignatura
-     * @return nota media como double
-     * @throws IOException en caso de error HTTP o parsing
-     */
-    public static double calcularNotaMedia(ServletContext context, HttpSession session, String acronimo) throws IOException {
-        String apiKey = (String) session.getAttribute("apiKey");
-        String cookie = (String) session.getAttribute("sessionCookie");
+        System.out.println("ServicioProfesor (obtenerProfesorPorDni): Solicitando datos del profesor DNI: " + dniProfesor);
+        String jsonProfesor = ClienteCentro.obtenerInstancia().obtenerRecurso("profesores/" + dniProfesor, cred.apiKey, cred.cookie);
+        System.out.println("ServicioProfesor (obtenerProfesorPorDni): JSON datos profesor " + dniProfesor + ": " + jsonProfesor);
         
-        // Aquí la ruta de la API que devuelve la nota media, si existe (si no, se debería calcular localmente)
-        String recurso = "asignaturas/" + acronimo + "/notamedia"; 
+        if (jsonProfesor == null || jsonProfesor.trim().isEmpty() || jsonProfesor.trim().equalsIgnoreCase("null")) {
+            System.err.println("ServicioProfesor (obtenerProfesorPorDni): No se recibió información del profesor para DNI: " + dniProfesor);
+            return null; 
+        }
+        Profesor profesor = gson.fromJson(jsonProfesor, Profesor.class);
+        if (profesor == null) {
+             System.err.println("ServicioProfesor (obtenerProfesorPorDni): Error al mapear datos del profesor para DNI: " + dniProfesor + ". JSON: " + jsonProfesor);
+            return null; 
+        }
+
+        System.out.println("ServicioProfesor (obtenerProfesorPorDni): Solicitando asignaturas del profesor DNI: " + dniProfesor);
+        String jsonAsignaturas = ClienteCentro.obtenerInstancia().obtenerRecurso("profesores/" + dniProfesor + "/asignaturas", cred.apiKey, cred.cookie);
         
-        String json = ClienteCentro.obtenerInstancia().obtenerRecurso(recurso, apiKey, cookie);
+        System.out.println("ServicioProfesor (obtenerProfesorPorDni): JSON CRUDO recibido para asignaturas del profesor " + dniProfesor + ": " + jsonAsignaturas);
         
-        // Parsear la respuesta, que debería ser un número (o un JSON con campo notaMedia)
-        // Suponiendo que es solo el número en texto
+        if (jsonAsignaturas != null && !jsonAsignaturas.trim().isEmpty() && !jsonAsignaturas.trim().equalsIgnoreCase("null") && !jsonAsignaturas.trim().equals("[]")) {
+            List<Asignatura> asignaturas = gson.fromJson(jsonAsignaturas, new TypeToken<List<Asignatura>>() {}.getType());
+            profesor.setAsignaturas(asignaturas != null ? asignaturas : Collections.emptyList());
+        } else {
+            System.out.println("ServicioProfesor (obtenerProfesorPorDni): No se recibieron asignaturas o la lista está vacía para el profesor DNI: " + dniProfesor + ". JSON recibido: " + jsonAsignaturas);
+            profesor.setAsignaturas(Collections.emptyList());
+        }
+        return profesor;
+    }
+
+    /**
+     * Obtiene la lista de alumnos matriculados en una asignatura específica,
+     * incluyendo sus datos completos y la nota en esa asignatura.
+     */
+    public static List<Alumno> obtenerAlumnosConNotaPorAsignatura(ServletContext context, HttpSession session, String acronimoAsignatura) 
+            throws IOException, ParseException, JsonSyntaxException {
+        CredencialesSesion cred = obtenerCredenciales(session); // Credenciales del profesor logueado
+        
+        System.out.println("ServicioProfesor: Solicitando alumnos para asignatura: " + acronimoAsignatura);
+        // Paso 1: Obtener la lista de DNI de alumnos y sus notas para la asignatura
+        String jsonAlumnosNotas = ClienteCentro.obtenerInstancia().obtenerRecurso("asignaturas/" + acronimoAsignatura + "/alumnos", cred.apiKey, cred.cookie);
+        System.out.println("ServicioProfesor: JSON CRUDO para alumnos de " + acronimoAsignatura + ": " + jsonAlumnosNotas);
+
+        List<Alumno> listaFinalAlumnos = new ArrayList<>();
+        if (jsonAlumnosNotas == null || jsonAlumnosNotas.trim().isEmpty() || jsonAlumnosNotas.trim().equalsIgnoreCase("null") || jsonAlumnosNotas.trim().equals("[]")) {
+            System.out.println("ServicioProfesor: No se recibieron alumnos o la lista está vacía para la asignatura: " + acronimoAsignatura);
+            return listaFinalAlumnos; 
+        }
+
+        // El JSON esperado es un array de objetos: [{"alumno": "DNI_X", "nota": "NOTA_X"}, ...]
+        TypeToken<List<Map<String, String>>> typeToken = new TypeToken<List<Map<String, String>>>() {};
+        List<Map<String, String>> alumnosConNotaRaw = null;
         try {
-            return Double.parseDouble(json);
-        } catch (NumberFormatException e) {
-            throw new IOException("Error al parsear nota media: " + json, e);
+            alumnosConNotaRaw = gson.fromJson(jsonAlumnosNotas, typeToken.getType());
+        } catch (JsonSyntaxException e) {
+            System.err.println("ServicioProfesor: Error de sintaxis JSON al parsear la lista de alumnos/notas de la asignatura " + acronimoAsignatura + ". JSON: " + jsonAlumnosNotas);
+            e.printStackTrace();
+            return listaFinalAlumnos; // Devuelve lista vacía si el JSON es inválido
         }
-    }
-    
-    public static String obtenerNotaAlumno(ServletContext context, HttpSession session, String acronimo, String dniAlumno) throws IOException {
-        // Obtener el alumno (sus datos y asignaturas)
-        Alumno alumno = null;
-		try {
-			alumno = ServicioAlumno.obtenerAlumno(context, session);
-		} catch (ParseException e) {
-			
-			e.printStackTrace();
-		} catch (JsonSyntaxException e) {
-			
-			e.printStackTrace();
-		} catch (IOException e) {
-			
-			e.printStackTrace();
-		}
-        
-        if (alumno == null || alumno.getAsignaturas() == null) {
-            return null;
-        }
-        
-        for (Asignatura asignatura : alumno.getAsignaturas()) {
-            if (asignatura.getAcronimo().equalsIgnoreCase(acronimo)) {
-                return asignatura.getNota();
+
+        if (alumnosConNotaRaw != null) {
+            for (Map<String, String> alumnoRaw : alumnosConNotaRaw) {
+                String dniAlumno = alumnoRaw.get("alumno"); 
+                String notaEnAsignatura = alumnoRaw.get("nota");
+
+                if (dniAlumno != null) {
+                    // Paso 2: Obtener detalles completos del alumno (nombre, apellidos)
+                    System.out.println("ServicioProfesor: Solicitando detalles del alumno: " + dniAlumno);
+                    String jsonAlumnoDetalles = ClienteCentro.obtenerInstancia().obtenerRecurso("alumnos/" + dniAlumno, cred.apiKey, cred.cookie);
+                    System.out.println("ServicioProfesor: JSON detalles alumno " + dniAlumno + ": " + jsonAlumnoDetalles);
+                    
+                    if (jsonAlumnoDetalles != null && !jsonAlumnoDetalles.isEmpty() && !jsonAlumnoDetalles.equalsIgnoreCase("null")) {
+                        Alumno alumnoCompleto = gson.fromJson(jsonAlumnoDetalles, Alumno.class);
+                        if (alumnoCompleto != null) {
+                            // Para pasar la nota al JSP, creamos una lista temporal de asignaturas para este alumno
+                            // que solo contiene la asignatura actual con su nota.
+                            Asignatura asignaturaConNota = new Asignatura();
+                            asignaturaConNota.setAcronimo(acronimoAsignatura); 
+                            asignaturaConNota.setNota(notaEnAsignatura);
+                            alumnoCompleto.setAsignaturas(Collections.singletonList(asignaturaConNota)); 
+                            
+                            listaFinalAlumnos.add(alumnoCompleto);
+                        } else {
+                             System.err.println("ServicioProfesor: Error al mapear detalles del alumno " + dniAlumno);
+                        }
+                    } else {
+                         System.err.println("ServicioProfesor: No se recibieron detalles para el alumno " + dniAlumno);
+                    }
+                } else {
+                    System.err.println("ServicioProfesor: No se pudo extraer el DNI de uno de los alumnos en la asignatura " + acronimoAsignatura + ". Objeto JSON raw: " + alumnoRaw);
+                }
             }
         }
-        
-        return null;  // no encontrada la asignatura o nota
+        return listaFinalAlumnos;
     }
-    
-    public static boolean modificarNotaAlumno(ServletContext context, HttpSession session,
-            String dniAlumno, String acronimoAsignatura, String nuevaNota) throws IOException {
-			// Obtenemos las credenciales de la sesión
-			String apiKey = (String) session.getAttribute("apiKey");
-			String sessionCookie = (String) session.getAttribute("sessionCookie");
-			
-			// Verificamos que las credenciales existan
-			if (apiKey == null || sessionCookie == null) {
-			throw new IOException("No autenticado con CentroEducativo");
-			}
-			
-			// Construimos la URL para el PUT a la API
-			String baseUrl = "http://localhost:9090/CentroEducativo/";  // Cambia la URL base si es necesario
-			String urlString = baseUrl + "alumnos/" + dniAlumno + "/asignaturas/" + acronimoAsignatura + "?key=" + apiKey;
-			URL url = new URL(urlString);
-			
-			// Abrimos la conexión HTTP
-			HttpURLConnection con = (HttpURLConnection) url.openConnection();
-			con.setRequestMethod("PUT");
-			con.setRequestProperty("Content-Type", "application/json");
-			con.setRequestProperty("Cookie", sessionCookie);  // Para mantener la sesión
-			con.setDoOutput(true);
-			
-			// Cuerpo de la solicitud con la nueva nota
-			String jsonBody = "\"" + nuevaNota + "\"";  // Nota debe ser un string
-			
-			try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(con.getOutputStream(), StandardCharsets.UTF_8))) {
-			writer.write(jsonBody);
-			}
-			
-			// Obtener el código de respuesta
-			int responseCode = con.getResponseCode();
-			if (responseCode == HttpURLConnection.HTTP_OK) {
-			// Si la respuesta es 200 OK, todo salió bien
-			return true;
-			} else {
-			// Si la respuesta no es OK, retornamos false
-			return false;
-			}
 }
-
-
-}
-
