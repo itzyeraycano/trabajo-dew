@@ -23,7 +23,7 @@
     <%-- Necesario para peticiones POST desde AJAX si usas Spring Security con CSRF --%>
     <%-- <meta name="${_csrf.parameterName}" content="${_csrf.token}"/> --%>
 </head>
-<body>
+<body class="profesor">
     <%
         @SuppressWarnings("unchecked") 
         List<Alumno> alumnos = (List<Alumno>) request.getAttribute("alumnosDeAsignatura");
@@ -45,7 +45,9 @@
             <div class="alert alert-info text-center" role="alert">No hay alumnos matriculados en esta asignatura o no se pudieron cargar los datos.</div>
         <% } else { %>
             <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white"><h5 class="mb-0">Listado de Alumnos y Calificaciones</h5></div>
+                <div class="card-header">
+                    <h5 class="mb-0">Listado de Alumnos y Calificaciones</h5>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped table-hover mb-0">
                         <thead>

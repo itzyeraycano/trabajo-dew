@@ -8,13 +8,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
     <link href="${pageContext.request.contextPath}/css/estilos.css" rel="stylesheet">
-    <style>
-        body { background-color: #f8f9fa; }
-        .card-header { background-color: #007bff; color: white; }
-        .list-group-item-action:hover { background-color: #e9ecef; }
-    </style>
 </head>
-<body>
+<body class="profesor">
     <%
         Profesor profesor = (Profesor) request.getAttribute("profesor");
         String errorMsg = (String) request.getAttribute("error");
