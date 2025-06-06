@@ -110,7 +110,7 @@ public class ClienteCentro {
 	  public String obtenerRecurso(String resource, String apiKey, String cookie)
 	          throws IOException {
 
-	      String url = String.format("%s%s?key=%s", BASE_URL, resource, apiKey);
+	      String url = String.format("%s%s?key=%s", BASE_URL, resource, apiKey); 
 	      HttpGet get = new HttpGet(url);
 	      get.setHeader("Accept", "application/json");
 	      get.setHeader("Cookie", cookie);
