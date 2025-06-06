@@ -120,7 +120,7 @@ for ASIG_ACRONIMO in "${ASIGNATURAS_WICK[@]}"; do
 done; echo ""
 
 # Bruce Wayne (11223344A) en DEW
-DNI_WAYNE="11223344A"; ASIGNATURAS_WAYNE=("DEW")
+DNI_WAYNE="11223344A"; ASIGNATURAS_WAYNE=("DEW" "PPE")
 echo "Inscribiendo a Bruce Wayne ($DNI_WAYNE)..."
 for ASIG_ACRONIMO in "${ASIGNATURAS_WAYNE[@]}"; do
   echo "  Intentando inscribir en: $ASIG_ACRONIMO"
@@ -133,7 +133,7 @@ for ASIG_ACRONIMO in "${ASIGNATURAS_WAYNE[@]}"; do
 done; echo ""
 
 # Clark Kent (55667788B) en PRG
-DNI_KENT="55667788B"; ASIGNATURAS_KENT=("PRG") 
+DNI_KENT="55667788B"; ASIGNATURAS_KENT=("PRG" "DCU") 
 echo "Inscribiendo a Clark Kent ($DNI_KENT)..."
 for ASIG_ACRONIMO in "${ASIGNATURAS_KENT[@]}"; do
   echo "  Intentando inscribir en: $ASIG_ACRONIMO"
@@ -145,6 +145,18 @@ for ASIG_ACRONIMO in "${ASIGNATURAS_KENT[@]}"; do
   echo "    Código de Estado HTTP para inscripción en $ASIG_ACRONIMO: $HTTP_CODE_INSC"
 done; echo ""
 
+
+DNI_MINERVA="37264096W"; ASIGNATURAS_MINERVA=("PRG" "DEW") 
+echo "Inscribiendo a Clark Kent ($DNI_KENT)..."
+for ASIG_ACRONIMO in "${ASIGNATURAS_MINERVA[@]}"; do
+  echo "  Intentando inscribir en: $ASIG_ACRONIMO"
+  HTTP_CODE_INSC=$(curl -s -w "%{http_code}" -o /dev/null \
+    -X POST "${BASE_URL}/alumnos/${DNI_MINERVA}/asignaturas?key=$ADMIN_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d "$ASIG_ACRONIMO" \
+    -b $ADMIN_COOKIE_FILE)
+  echo "    Código de Estado HTTP para inscripción en $ASIG_ACRONIMO: $HTTP_CODE_INSC"
+done; echo ""
 
 # --- PASO 7: AUTENTICACIÓN DEL PROFESOR PABLO MARTINES (para poner notas) ---
 echo "--- PASO 7: Autenticando como Profesor ($PROFESOR_DNI_PABLO) para poner notas... ---"
@@ -169,14 +181,27 @@ declare -a notas_a_poner
 notas_a_poner[0]="33445566X;DEW;7.5"
 notas_a_poner[1]="33445566X;PRG;8.0"
 notas_a_poner[2]="11223344A;DEW;9.0"
-notas_a_poner[3]="55667788B;PRG;6.5"
+notas_a_poner[3]="11223344A;PPE;8.0"
+notas_a_poner[4]="55667788B;PRG;6.5"
+notas_a_poner[5]="55667788B;DCU;9.5"
+notas_a_poner[6]="12345678W;DEW;7.0"
+notas_a_poner[7]="12345678W;IAP;5.5"
+notas_a_poner[8]="12345678W;DCU;9.5"
+notas_a_poner[9]="23456387R;DEW;3.5"
+notas_a_poner[10]="23456387R;DCU;9.5"
+notas_a_poner[11]="34567891F;IAP;5.5"
+notas_a_poner[12]="34567891F;DCU;6.5"
+notas_a_poner[13]="93847525G;IAP;7.0"
+notas_a_poner[14]="93847525G;DEW;6.5"
+notas_a_poner[15]="37264096W;PRG;7.0"
+notas_a_poner[16]="37264096W;DEW;6.5"
 
 for nota_data in "${notas_a_poner[@]}"; do
   IFS=';' read -r DNI_ALUMNO_NOTA ACRONIMO_ASIG_NOTA NOTA_VALOR <<< "$nota_data"
   
   # MODIFICADO: Acrónimo en el path SIN comillas URL-codificadas.
   # MODIFICADO: Cuerpo de la nota como un número simple (ej. 7.5).
-  # MODIFICADO: Sin cabecera "accept: text/plain" explícita (curl usará Accept: */*).
+  # MODIFICADO: Sin cabecera "accept: text/plain" explícita (curl usará Accept: /).
   NOTA_BODY="$NOTA_VALOR" 
   
   echo "Poniendo nota $NOTA_VALOR a $DNI_ALUMNO_NOTA en $ACRONIMO_ASIG_NOTA..."
@@ -249,4 +274,3 @@ echo ""
 
 
 echo "Poblamiento, inscripciones y asignación de notas completados."
-

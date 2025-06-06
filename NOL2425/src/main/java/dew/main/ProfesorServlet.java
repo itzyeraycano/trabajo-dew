@@ -42,7 +42,7 @@ public class ProfesorServlet extends HttpServlet {
                 break;
             case "/profesores":
                 mostrarLista(request, response);
-                break;
+                break;    
             default:
                 response.sendError(HttpServletResponse.SC_NOT_FOUND);
         }
@@ -96,11 +96,8 @@ public class ProfesorServlet extends HttpServlet {
         request.getRequestDispatcher("lista_profesores.jsp").forward(request, response);
     }
     
-    @Override
-    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    	
-    	
-    	
-    }
+  
 }
+    
+
 	

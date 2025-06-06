@@ -1,5 +1,6 @@
 package dew.servicios;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -17,6 +18,10 @@ import org.apache.hc.core5.http.ParseException;
 import org.apache.hc.core5.http.io.entity.StringEntity;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import jakarta.servlet.http.HttpServletRequest;
 /**
  * Cliente para interactuar con la API REST del Centro Educativo.
  * Realiza peticiones GET y POST para obtener datos y autenticar usuarios.
@@ -24,8 +29,11 @@ import com.google.gson.Gson;
 public class ClienteCentro {
 
 	private static final String BASE_URL = "http://localhost:9090/CentroEducativo/";
+	 public static String getBaseUrl() {
+		    return BASE_URL;
+		  }
 	  private static final Gson GSON = new Gson();
-
+	  
 
 	// 1) Un CookieStore estático para gestionar cookies
 	  private static final CookieStore COOKIE_STORE = new BasicCookieStore();
@@ -131,31 +139,12 @@ public class ClienteCentro {
 	      }
 	  }
 
-    
-    /**
-     * Enviar una petición PUT con cuerpo JSON al recurso REST.
-     * 
-     * @param recurso El endpoint relativo (sin /, p.ej: "alumnos/{dni}/asignaturas/{acronimo}")
-     * @param jsonBody JSON string con los datos
-     * @param apiKey Api key para autenticación
-     * @param cookie Cookie de sesión JSESSIONID
-     * @return true si el servidor responde con código 2xx
-     * @throws IOException si hay fallo HTTP o red
-     */
-	  public boolean enviarPut(String recurso, String jsonBody, String apiKey, String cookie) throws IOException {
-		    String url = String.format("%s%s?key=%s", BASE_URL, recurso, apiKey);
-		    HttpPut putRequest = new HttpPut(url);
-		    putRequest.setEntity(new StringEntity(jsonBody, StandardCharsets.UTF_8));
-		    putRequest.setHeader("Content-Type", "application/json");
-		    putRequest.setHeader("Cookie", cookie);
-
-		    try (CloseableHttpResponse response = HTTP.execute(putRequest)) {
-		        int statusCode = response.getCode();
-		        if (statusCode < 200 || statusCode >= 300) {
-		            throw new IOException("PUT " + recurso + " falló: HTTP " + statusCode);
-		        }
-		        return true;
+	  public static JsonObject parseJsonBody(HttpServletRequest req) throws IOException {
+		    try (BufferedReader reader = req.getReader()) {
+		      return JsonParser.parseReader(reader).getAsJsonObject();
+		    } catch (Exception e) {
+		      return null;
 		    }
-		}
+		  }
 
 }

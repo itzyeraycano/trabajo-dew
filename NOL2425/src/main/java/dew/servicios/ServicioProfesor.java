@@ -10,7 +10,12 @@ import dew.clases.Profesor;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 
 import org.apache.hc.core5.http.ParseException;
@@ -130,13 +135,7 @@ public class ServicioProfesor {
      * @return true si la modificación fue exitosa
      * @throws IOException Si falla la petición o sesión inválida
      */
-    public static boolean modificarNotaAlumno(ServletContext context, HttpSession session,
-            String dniAlumno, String acronimoAsignatura, String nuevaNota) throws IOException {
-        CredencialesSesion cred = obtenerCredenciales(session);
-        String recurso = String.format("alumnos/%s/asignaturas/%s", dniAlumno, acronimoAsignatura);
-        
-        return ClienteCentro.obtenerInstancia().enviarPut(recurso, nuevaNota, cred.apiKey, cred.cookie);
-    }
+   
 
     /**
      * Obtiene la lista de alumnos matriculados en una asignatura impartida por el profesor.
@@ -208,6 +207,47 @@ public class ServicioProfesor {
         
         return null;  // no encontrada la asignatura o nota
     }
+    
+    public static boolean modificarNotaAlumno(ServletContext context, HttpSession session,
+            String dniAlumno, String acronimoAsignatura, String nuevaNota) throws IOException {
+			// Obtenemos las credenciales de la sesión
+			String apiKey = (String) session.getAttribute("apiKey");
+			String sessionCookie = (String) session.getAttribute("sessionCookie");
+			
+			// Verificamos que las credenciales existan
+			if (apiKey == null || sessionCookie == null) {
+			throw new IOException("No autenticado con CentroEducativo");
+			}
+			
+			// Construimos la URL para el PUT a la API
+			String baseUrl = "http://localhost:9090/CentroEducativo/";  // Cambia la URL base si es necesario
+			String urlString = baseUrl + "alumnos/" + dniAlumno + "/asignaturas/" + acronimoAsignatura + "?key=" + apiKey;
+			URL url = new URL(urlString);
+			
+			// Abrimos la conexión HTTP
+			HttpURLConnection con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod("PUT");
+			con.setRequestProperty("Content-Type", "application/json");
+			con.setRequestProperty("Cookie", sessionCookie);  // Para mantener la sesión
+			con.setDoOutput(true);
+			
+			// Cuerpo de la solicitud con la nueva nota
+			String jsonBody = "\"" + nuevaNota + "\"";  // Nota debe ser un string
+			
+			try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(con.getOutputStream(), StandardCharsets.UTF_8))) {
+			writer.write(jsonBody);
+			}
+			
+			// Obtener el código de respuesta
+			int responseCode = con.getResponseCode();
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+			// Si la respuesta es 200 OK, todo salió bien
+			return true;
+			} else {
+			// Si la respuesta no es OK, retornamos false
+			return false;
+			}
+}
 
 
 }
