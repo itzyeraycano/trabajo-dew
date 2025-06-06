@@ -8,7 +8,13 @@ import dew.clases.Asignatura;
 import dew.clases.Profesor;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpSession;
+
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -117,6 +123,7 @@ public class ServicioProfesor {
             return listaFinalAlumnos; // Devuelve lista vacía si el JSON es inválido
         }
 
+
         if (alumnosConNotaRaw != null) {
             for (Map<String, String> alumnoRaw : alumnosConNotaRaw) {
                 String dniAlumno = alumnoRaw.get("alumno"); 
@@ -151,5 +158,56 @@ public class ServicioProfesor {
             }
         }
         return listaFinalAlumnos;
+    }
+    /**
+     * Método para modificar la nota de un alumno en una asignatura específica
+     * @param context El contexto del servlet
+     * @param session La sesión actual del usuario (debe contener la apiKey y sessionCookie)
+     * @param dniAlumno El DNI del alumno cuyo nota se va a modificar
+     * @param acronimoAsignatura El acrónimo de la asignatura donde se va a modificar la nota
+     * @param nuevaNota La nueva nota a asignar
+     * @return boolean Si la operación fue exitosa o no
+     * @throws IOException Si ocurre un error en la comunicación con la API
+     */
+    public static boolean modificarNotaAlumno(ServletContext context, HttpSession session,
+                                        String dniAlumno, String acronimoAsignatura, String nuevaNota) throws IOException {
+
+        // Obtener las credenciales de la sesión
+        String apiKey = (String) session.getAttribute("apiKey");
+        String sessionCookie = (String) session.getAttribute("sessionCookie");
+
+        // Verificar que la sesión es válida
+        if (apiKey == null || sessionCookie == null) {
+            throw new IOException("No autenticado con CentroEducativo");
+        }
+
+        // Construir la URL para hacer el PUT al servidor de la API
+        String urlString = "http://localhost:9090/CentroEducativo/alumnos/" + dniAlumno + "/asignaturas/" + acronimoAsignatura + "?key=" + apiKey;
+        URL url = new URL(urlString);
+
+        // Configurar la conexión HTTP PUT
+        HttpURLConnection con = (HttpURLConnection) url.openConnection();
+        con.setRequestMethod("PUT");
+        con.setRequestProperty("Content-Type", "application/json");  // El cuerpo es JSON
+        con.setRequestProperty("Cookie", sessionCookie);  // Añadir la cookie de sesión
+        con.setDoOutput(true);  // Necesitamos enviar un cuerpo en la solicitud
+
+        // El cuerpo de la solicitud es la nueva nota en formato JSON
+        String jsonBody = "\"" + nuevaNota + "\"";  // La nueva nota es un número entre comillas, en formato JSON
+
+        // Escribir el cuerpo de la solicitud en la conexión HTTP
+        try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(con.getOutputStream(), Charset.forName("UTF-8")))) {
+            writer.write(jsonBody);
+        }
+
+        // Obtener el código de respuesta de la solicitud
+        int responseCode = con.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            // Si el código es 200, la operación fue exitosa
+            return true;
+        } else {
+            // Si el código no es 200, hubo un error
+            return false;
+        }
     }
 }
