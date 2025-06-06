@@ -13,6 +13,18 @@
     <div class="container d-flex align-items-center justify-content-center min-vh-100">
         <div class="card shadow-lg border-0" style="max-width: 500px; width: 100%;">
             <div class="card-body p-5 text-center">
+            	<%
+				    Object status = request.getAttribute("jakarta.servlet.error.status_code");
+				    int codigo = (status != null) ? Integer.parseInt(status.toString()) : 0;
+				
+				    String mensaje = "Algo salió mal durante el proceso de autenticación.";
+				    String detalle = "Verifica tus credenciales e inténtalo de nuevo.";
+				
+				    if (codigo == 403) {
+				        mensaje = "Acceso denegado por rol incorrecto.";
+				        detalle = "Has intentado acceder a una zona no permitida para tu perfil.";
+				    }
+				%>
                 <div class="text-danger mb-4">
                     <i class="bi bi-exclamation-circle-fill" style="font-size: 3rem;"></i>
                 </div>

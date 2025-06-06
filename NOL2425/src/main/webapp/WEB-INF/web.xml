@@ -131,6 +131,12 @@
     <welcome-file>index.jsp</welcome-file>
     <welcome-file>index.html</welcome-file>
   </welcome-file-list>
+  
+  <!-- Página de error -->
+  <error-page>
+  <error-code>403</error-code>
+  <location>/login-error.jsp</location>
+  </error-page>
 
 </web-app>
 
