@@ -43,8 +43,7 @@
 								</h2>
 								<p class="card-text">
 									Podrás <a href="<%= request.getContextPath() %>/profesor" class="btn btn-success btn-sm me-2">consultar <i class="bi bi-search"></i></a> 
-									o <a href="<%= request.getContextPath() %>/profesor" class="btn btn-success btn-sm">modificar <i class="bi bi-pencil"></i></a> 
-									las calificaciones en tus asignaturas... Debes contar con tus datos identificativos para acceder.
+									las calificaciones en tus asignaturas y modificarlas ... Debes contar con tus datos identificativos para acceder.
 								</p>
 							</div>
 						</div>

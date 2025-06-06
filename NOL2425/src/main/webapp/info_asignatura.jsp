@@ -28,16 +28,7 @@
         <span class="badge badge-gradient">${asignatura.acronimo}</span>
       </div>
 
-      <!-- Profesor -->
-      <div class="info-block">
-        <h3 class="mb-4">
-          <i class="bi bi-person-workspace me-2 text-primary"></i>
-          Profesor
-            </h3>
-        <div class="datos-field">
-          <div class="datos-value">${profesor.nombre} ${profesor.apellidos}</div>
-        </div>
-          </div>
+     
 
       <!-- Detalles de la Asignatura -->
       <div class="info-block">
