@@ -68,7 +68,17 @@
     <url-pattern>/profesor</url-pattern>
     <url-pattern>/profesores</url-pattern>
 </servlet-mapping>
-  
+
+<servlet>
+    <servlet-name>ModificarNotaServlet</servlet-name>
+    <servlet-class>dew.main.ModificarNotaServlet</servlet-class>
+</servlet>
+
+<servlet-mapping>
+    <servlet-name>ModificarNotaServlet</servlet-name>
+    <url-pattern>/alumnos/*/asignaturas/*</url-pattern>
+</servlet-mapping>
+ 
 <!-- Zona protegida -->
 <security-constraint>
   <web-resource-collection>
@@ -89,6 +99,8 @@
     <web-resource-name>Zona protegida</web-resource-name>
     <url-pattern>/profesor</url-pattern>
     <url-pattern>/profesores</url-pattern>
+    <url-pattern>/modificarNota</url-pattern>
+    <url-pattern>/modificarNota/*</url-pattern>
     <url-pattern>*.jsp</url-pattern> 
   </web-resource-collection>
   <auth-constraint>

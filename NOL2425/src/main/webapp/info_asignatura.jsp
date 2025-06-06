@@ -35,7 +35,7 @@
           Profesor
             </h3>
         <div class="datos-field">
-          <div class="datos-value">Nombre del Profesor</div>
+          <div class="datos-value">${profesor.nombre} ${profesor.apellidos}</div>
         </div>
           </div>
 

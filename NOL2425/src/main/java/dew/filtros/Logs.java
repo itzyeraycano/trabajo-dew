@@ -6,7 +6,7 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 
 public class Logs implements Filter {
-    private static final String logFilePath = "/home/dew/git/trabajo-dew/NOL2425/src/main/webapp/logs/nol2425.log";
+    private static final String logFilePath = "./logs/nol2425.log";
 
     @Override
     public void init(FilterConfig filterConfig) {

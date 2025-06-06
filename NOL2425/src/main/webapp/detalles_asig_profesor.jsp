@@ -91,61 +91,62 @@
     </div>
 
     <script>
-        function editarNota(dniAlumno, acronimoAsignatura, celdaNotaElement) {
-            let notaActual = celdaNotaElement.textContent;
-            // Si la nota es "Sin calificar" o "0.0" (por defecto de CE), mostrar el prompt vacío
-            let promptDefault = (notaActual.startsWith("Sin calificar") || notaActual === "0.0") ? "" : notaActual;
-            let nuevaNotaStr = prompt("Introduce la nueva nota para el alumno " + dniAlumno + " en " + acronimoAsignatura + ":", promptDefault);
+    function editarNota(dniAlumno, acronimoAsignatura, celdaNotaElement) {
+        let notaActual = celdaNotaElement.textContent;
 
-            if (nuevaNotaStr !== null) { // Si el usuario no presiona Cancelar
-                nuevaNotaStr = nuevaNotaStr.trim().replace(',', '.'); // Reemplazar coma por punto para decimales
+        // Si la nota es "Sin calificar" o "0.0" (por defecto de CE), mostrar el prompt vacío
+        let promptDefault = (notaActual.startsWith("Sin calificar") || notaActual === "0.0") ? "" : notaActual;
+        let nuevaNotaStr = prompt("Introduce la nueva nota para el alumno " + dniAlumno + " en " + acronimoAsignatura + ":", promptDefault);
 
-                if (nuevaNotaStr === "") {
-                    alert("La nota no puede estar vacía si se desea modificar.");
-                    return;
-                }
+        if (nuevaNotaStr !== null) { // Si el usuario no presiona Cancelar
+            nuevaNotaStr = nuevaNotaStr.trim().replace(',', '.'); // Reemplazar coma por punto para decimales
 
-                // Validar que la nota sea un número entre 0 y 10, con un decimal opcional
-                if (!/^\d(\.\d)?0?$/.test(nuevaNotaStr) && !/^(10(\.0)?)$/.test(nuevaNotaStr) || parseFloat(nuevaNotaStr) < 0 || parseFloat(nuevaNotaStr) > 10) {
-                    alert("Por favor, introduce una nota válida (ej: 7, 7.5, 10). Entre 0 y 10, con un decimal como máximo.");
-                    return;
-                }
-
-                const params = new URLSearchParams();
-                params.append('action', 'modificarNota');
-                params.append('dniAlumno', dniAlumno);
-                params.append('acronimoAsignatura', acronimoAsignatura);
-                params.append('nuevaNota', nuevaNotaStr);
-                
-                fetch('${pageContext.request.contextPath}/profesor', { // Llama a ProfesorServlet
-                    method: 'POST', // Usamos POST para simplificar, el servlet lo manejará
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                        // Si usas Spring Security con CSRF, necesitarías añadir el token:
-                        // 'X-CSRF-TOKEN': document.querySelector('meta[name="_csrf.token"]')?.getAttribute('content')
-                    },
-                    body: params
-                })
-                .then(response => {
-                    // Siempre intentar parsear como JSON, incluso si hay error HTTP,
-                    // porque el servlet debería devolver un JSON con el mensaje de error.
-                    return response.json().then(data => ({ok: response.ok, status: response.status, data}));
-                })
-                .then(result => {
-                    console.log('Respuesta del servidor:', result.data);
-                    if (result.ok && result.data.success) {
-                        alert(result.data.message || 'Nota actualizada correctamente.');
-                        celdaNotaElement.textContent = nuevaNotaStr; // Actualizar la nota en la tabla
-                    } else {
-                        alert('Error al actualizar la nota: ' + (result.data.message || 'Error desconocido del servidor (status ' + result.status + ').'));
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error en AJAX:', error);
-                    alert('Error de conexión o respuesta no JSON al intentar actualizar la nota.');
-                });
+            if (nuevaNotaStr === "") {
+                alert("La nota no puede estar vacía si se desea modificar.");
+                return;
             }
+
+            // Validar que la nota sea un número entre 0 y 10, con un decimal opcional
+            if (!/^\d(\.\d)?0?$/.test(nuevaNotaStr) && !/^(10(\.0)?)$/.test(nuevaNotaStr) || parseFloat(nuevaNotaStr) < 0 || parseFloat(nuevaNotaStr) > 10) {
+                alert("Por favor, introduce una nota válida (ej: 7, 7.5, 10). Entre 0 y 10, con un decimal como máximo.");
+                return;
+            }
+
+            const params = new URLSearchParams();
+            params.append('action', 'modificarNota');
+            params.append('dniAlumno', dniAlumno);
+            params.append('acronimoAsignatura', acronimoAsignatura);
+            params.append('nuevaNota', nuevaNotaStr);
+            
+            // Realizamos la solicitud PUT con la URL del servlet que manejará la actualización de la nota
+            fetch(`${pageContext.request.contextPath}/modificarNota`, { // Cambiar por la URL correcta de tu servlet
+                method: 'POST', // Usamos POST para simplificar, el servlet lo manejará
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: params
+            })
+            .then(response => {
+                // Siempre intentar parsear como JSON, incluso si hay error HTTP,
+                // porque el servlet debería devolver un JSON con el mensaje de error.
+                return response.json().then(data => ({ok: response.ok, status: response.status, data}));
+            })
+            .then(result => {
+                console.log('Respuesta del servidor:', result.data);
+                if (result.ok && result.data.success) {
+                    alert(result.data.message || 'Nota actualizada correctamente.');
+                    celdaNotaElement.textContent = nuevaNotaStr; // Actualizar la nota en la tabla
+                } else {
+                    alert('Error al actualizar la nota: ' + (result.data.message || 'Error desconocido del servidor (status ' + result.status + ').'));
+                }
+            })
+            .catch((error) => {
+                console.error('Error en AJAX:', error);
+                alert('Error de conexión o respuesta no JSON al intentar actualizar la nota.');
+            });
         }
+    }
+
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
