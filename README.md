@@ -14,3 +14,6 @@ Pasos para el despliegue una vez configurado lo anterior:
 3. Ejecutar en tu IDE el proyecto NOL2425 mediante el servidor Tomcat.
 
 4. Abrir la aplicacion web en un puerto local "http://localhost:8080/NOL2425/"
+
+
+Se puede encontrar toda la documentacion del proyecto en el fichero Documentacion
