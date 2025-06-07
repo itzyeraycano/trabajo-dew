@@ -7,7 +7,7 @@ Sera necesario modificar su archivo tomcat-users.xml con el archivo subido con e
 
 Pasos para el despliegue una vez configurado lo anterior:
 
-1.Ejecutar en una terminal el sh "lanzaCentroEducativo.sh"
+1. Ejecutar en una terminal el sh "lanzaCentroEducativo.sh"
 
 2. Ejecutar en otra terminal el sh "poblar_centro_educativo.sh"
 
