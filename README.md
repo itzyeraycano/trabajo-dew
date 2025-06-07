@@ -16,4 +16,6 @@ Pasos para el despliegue una vez configurado lo anterior:
 4. Abrir la aplicacion web en un puerto local "http://localhost:8080/NOL2425/"
 
 
-Se puede encontrar toda la documentacion del proyecto en el fichero Documentacion
+Se puede encontrar toda la documentacion del proyecto en el fichero Documentacion_Tecnica.md 
+
+Se pueden revisar todas las actas localizadas en la carpeta Actas y creadas a partir de reuniones junto a los compañeros.
